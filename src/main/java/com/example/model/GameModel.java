@@ -431,7 +431,7 @@ public class GameModel {
     public boolean checkIfGameOver() {
         for (Player p : this.players) {
             System.err.println(p.getTotalVictoryPoints());
-            if (p.getTotalVictoryPoints() >= 3) {
+            if (p.getTotalVictoryPoints() >= 10) {
                 return true;
             }
         }
