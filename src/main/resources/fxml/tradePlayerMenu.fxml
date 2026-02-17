@@ -26,28 +26,26 @@
     style="-fx-padding: 20;">
 
     <Label fx:id="playerTradeTitleLabel"
-        style="-fx-font-size: 24px;
-               -fx-font-weight: bold;
-               -fx-text-fill: white;" />
+        styleClass="trading-title"/>
 
+    <Label fx:id="playerGiveTitle" styleClass="resources-title" text="You are Offering: "/>
     <HBox fx:id="giveResourceBox"
         spacing="10"
         alignment="CENTER"
         prefWidth="400">
-
         <!-- Added Dynamically -->
 
     </HBox>
 
+    <Label fx:id="playerReceiveTitle" styleClass="resources-title" text="To Receive: "/>
     <HBox fx:id="receiveResourceBox"
         spacing="10"
         alignment="CENTER"
         prefWidth="400">
-
         <!-- Added Dynamically -->
     </HBox>
 
-    <Button fx:id="proposeTradeButton" onAction="#handleProposeTrade" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+    <Button fx:id="proposeTradeButton" onAction="#handleProposeTrade" HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="action-button"/>
 
     <HBox fx:id="playersAcceptBox"
         spacing="10"

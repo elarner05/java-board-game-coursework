@@ -23,7 +23,8 @@
     xmlns="http://javafx.com/javafx"
     xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="com.example.view.TradingMenuController"
-    style="-fx-padding: 20;">
+    style="-fx-padding: 20;
+    -fx-background-color: rgba(40, 40, 40, 1.0);">
 
     <!-- Title -->
     <Label text="Trading Menu"
@@ -34,18 +35,19 @@
     <!-- Horizontal menu -->
     <HBox spacing="10"
           alignment="CENTER"
-          prefWidth="400">
+          prefWidth="400"
+          style="-fx-background-color: rgba(40, 40, 40, 1.0);">
 
-        <Button text="Players" onAction="#handlePlayersButton" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
-        <Button text="Ports"   onAction="#handlePortsButton" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
-        <Button text="Bank"    onAction="#handleBankButton" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+        <Button text="Players" onAction="#handlePlayersButton" HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="action-button"/>
+        <Button text="Ports"   onAction="#handlePortsButton" HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="action-button"/>
+        <Button text="Bank"    onAction="#handleBankButton" HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="action-button"/>
 
     </HBox>
 
-    <StackPane fx:id="contentPane" prefHeight="400" prefWidth="600" style="-fx-background-color: #2c3e50; -fx-border-color: #ecf0f1; -fx-border-width: 2;">
+    <StackPane fx:id="contentPane" prefHeight="400" prefWidth="800" style="-fx-background-color: rgba(40, 40, 40, 1.0); -fx-border-color: #000000; -fx-effect: dropshadow(one-pass-box, black, 8, 1.0, 0, 0); -fx-border-width: 2;">
         <!-- Dynamic content will be loaded here -->
     </StackPane>
 
-    <Button text="End Trading" onAction="#handleEndTradingButton"/>
+    <Button text="End Trading" onAction="#handleEndTradingButton" styleClass="action-button"/>
 
 </VBox>
