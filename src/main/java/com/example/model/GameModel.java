@@ -279,6 +279,18 @@ public class GameModel {
                 }
             }
 
+            // give starting resources based on second settlement placed
+            int numSettlements = getNumSettlementsOwnedByPlayer(id);
+            if (numSettlements == 2){
+                int resourceVertex = builtVertices.get(builtVertices.size() - 1);
+                Tile[] adjTiles = tiles.getAdjTiles(resourceVertex);
+                for (Tile t : adjTiles){
+                    ResourceConfig resource = t.getResourceFromTileID();
+                    Player p = getPlayer(id);
+                    p.changeResourceCount(resource, 1);
+                }
+            }
+
         }
 
         // | Build Road Phase |
@@ -358,6 +370,19 @@ public class GameModel {
 
     public int getSettlmentOwner(int index) {
         return settlements.getAllSettlements()[index].getPlayerID();
+    }
+
+    public int getNumSettlementsOwnedByPlayer(int playerID){
+        int count = 0;
+
+        Settlement[] allSettlements = settlements.getAllSettlements();
+        for (Settlement s : allSettlements){
+            if (s.getPlayerID() == playerID){
+                count++;
+            }
+        }
+
+        return count;
     }
 
     public boolean settlementValid(int vertex, int playerID) {
