@@ -238,7 +238,7 @@
         <!-- Actual popup box -->
         <StackPane fx:id="popupBox"
             alignment="CENTER"
-            maxWidth="800"
+            maxWidth="1150"
             maxHeight="700"
             style="
                 -fx-background-color: #1e1e2f;

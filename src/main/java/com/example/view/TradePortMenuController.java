@@ -69,6 +69,10 @@ public class TradePortMenuController {
     public void initialize() {
         portTradeTitleLabel.setText(LangManager.get("portTradeTitleLabel"));
         confirmTradeButton.setText(LangManager.get("confirmTradeButton"));
+
+        giveResourceBox.setSpacing(100);
+        receiveResourceBox.setSpacing(100);
+        selectPortBox.setSpacing(20);   // optional
     }
 
     private void updateResourceBoxes(GameViewModel viewModel) {

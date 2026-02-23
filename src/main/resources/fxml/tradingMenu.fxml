@@ -23,6 +23,7 @@
     xmlns="http://javafx.com/javafx"
     xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="com.example.view.TradingMenuController"
+    prefWidth="800"
     style="-fx-padding: 20;
     -fx-background-color: rgba(40, 40, 40, 1.0);">
 
@@ -35,7 +36,7 @@
     <!-- Horizontal menu -->
     <HBox spacing="10"
           alignment="CENTER"
-          prefWidth="400"
+          prefWidth="800"
           style="-fx-background-color: rgba(40, 40, 40, 1.0);">
 
         <Button text="Players" onAction="#handlePlayersButton" HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="action-button"/>

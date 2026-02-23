@@ -14,14 +14,13 @@ import com.example.viewmodel.viewstates.RoadViewState;
 import com.example.viewmodel.viewstates.TileViewState;
 import com.example.viewmodel.viewstates.VertexViewState;
 
-import javafx.beans.binding.Bindings;
 import javafx.application.Platform;
-import javafx.beans.property.ObjectProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
+import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.Circle;
@@ -34,9 +33,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.scene.transform.Rotate;
 import javafx.scene.Node;
 import javafx.scene.layout.Region;
+import javafx.beans.binding.Bindings;
 
 public class GameScreenController implements ViewModelAware<GameViewModel> {
     private GameViewModel viewModel;
@@ -56,11 +55,14 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
     @FXML
     private Polygon mainPentagon;
     @FXML
-    private Polygon smallTriangle;
-    @FXML
     private Pane rootPane, catanBoardPane;
     @FXML
     private Pane playerColumnPane;
+    @FXML
+    private Polygon smallTriangle;
+
+    @FXML
+    private Polygon numberArrow;
 
     @FXML
     private VBox playerList;
@@ -78,12 +80,16 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
 
     // Static holder for names before screen loads
     private int[] vertexToPort = new int[54]; // -1 = not a port
-    private Shape[] portDecorations = new Shape[54];
+    private Node[] portDecorations;
     private Shape[] roadNodes = new Shape[72];
 
     @Override
     public void setViewModel(GameViewModel viewModel) {
         this.viewModel = viewModel;
+
+        // Initialize portDecorations here
+        int numberOfPorts = viewModel.getPorts().length;
+        portDecorations = new Node[numberOfPorts];
 
         bindViewModel();
     }
@@ -123,8 +129,6 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
 
         setPlayerIndents();
 
-        bindTriangle();
-
         // Listen for changes
         players.addListener((ListChangeListener<PlayerViewState>) change -> {
             while (change.next()) {
@@ -143,7 +147,6 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
             setPlayerIndents();
         });
 
-
         try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/fxml/currentPlayer.fxml"));
@@ -152,6 +155,7 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
             CurrentPlayerController ctrl = loader.getController();
             ctrl.bindCurrentPlayer(viewModel);
             bottomPane.getChildren().add(node);
+            
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -191,19 +195,6 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
             e.printStackTrace();
         }
     }
-
-    private void bindTriangle(){
-
-        ObjectProperty<PlayerViewState> currentPlayer = viewModel.currentPlayerProperty();
-
-         // Background color
-        smallTriangle.fillProperty().bind(
-                Bindings.select(currentPlayer, "color"));
-        smallTriangle.strokeProperty().bind(
-                Bindings.select(currentPlayer, "color"));
-    }
-
-
 
     private void removePlayerRow(PlayerViewState player) {
         playerList.getChildren().removeIf(node -> node.getUserData() == player);
@@ -454,12 +445,12 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
             vertexPane.getChildren().add(vertex);
 
             // Add vertex ID label above
-            Text label = new Text(String.valueOf(vertexId));
-            label.setFill(Color.INDIGO);
-            label.setFont(Font.font(12));
-            label.setLayoutX(avgX - 4);
-            label.setLayoutY(avgY - 12);
-            vertexPane.getChildren().add(label);
+            // Text label = new Text(String.valueOf(vertexId));
+            // label.setFill(Color.INDIGO);
+            // label.setFont(Font.font(12));
+            // label.setLayoutX(avgX - 4);
+            // label.setLayoutY(avgY - 12);
+            // vertexPane.getChildren().add(label);
         }
     }
 
@@ -472,7 +463,6 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
         roadNodes = new Shape[roadVertices.length];
 
         double shorten = 16; // pixels to shorten at each end
-        double roadWidth = 12; // road thickness
 
         for (int roadId = 0; roadId < roadVertices.length; roadId++) {
             int v1 = roadVertices[roadId][0];
@@ -508,18 +498,15 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
             double midX = (startX + endX) / 2;
             double midY = (startY + endY) / 2;
 
-            // Road length
+            // New length
             double roadLength = Math.hypot(endX - startX, endY - startY);
 
-            // Rotation angle in degrees
+            // Rotation angle
             double angle = Math.toDegrees(Math.atan2(endY - startY, endX - startX));
 
             // Create rectangle
-            Rectangle road = new Rectangle();
-            road.setX(0);             // rectangle origin at (0,0)
-            road.setY(0);
-            road.setWidth(roadLength);
-            road.setHeight(roadWidth);
+            double roadWidth = 9;
+            Rectangle road = new Rectangle(roadLength, roadWidth);
             road.setFill(Color.GRAY);
             road.setStroke(Color.BLACK);
             road.setStrokeWidth(1);
@@ -527,12 +514,8 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
             // Center rectangle on midpoint
             road.setTranslateX(midX - roadLength / 2);
             road.setTranslateY(midY - roadWidth / 2);
-
-            // Rotate around center
-            road.setRotationAxis(Rotate.Z_AXIS);
             road.setRotate(angle);
 
-            // Add to arrays/pane
             roadNodes[roadId] = road;
             roadsPane.getChildren().add(road);
         }
@@ -615,53 +598,121 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
         });
     }
 
-    private void setVertex(int vertexId, int playerOwner, String type) {
+    private void setVertex(int vertexId, int playerOwner, String type) 
+    {
+
         if (vertexId < 0 || vertexId >= vertexNodes.length || vertexNodes[vertexId] == null) {
             return;
         }
 
-        // Remove old node (circle or rectangle)
+        // Remove old node
         vertexPane.getChildren().remove(vertexNodes[vertexId]);
 
-        // Determine color based on owner
         Color fillColor = viewModel.getPlayerColor(playerOwner);
 
-        // Create new node depending on type
         double layoutX = vertexNodes[vertexId].getLayoutX();
         double layoutY = vertexNodes[vertexId].getLayoutY();
+
         Shape newVertex;
-        if (type == "player_infrastructure.city") { // city = square
+
+        if ("player_infrastructure.city".equals(type)) {
             newVertex = createSquareVertex(fillColor, layoutX, layoutY);
-        } else if (type == "player_infrastructure.settlement") { // settlement = circle
+        } else if ("player_infrastructure.settlement".equals(type)) {
             newVertex = createCircleVertex(fillColor, layoutX, layoutY);
         } else {
-            newVertex = createCircleVertex(Color.GREY, layoutX, layoutY); // unowned = grey circle
+            newVertex = createCircleVertex(Color.GREY, layoutX, layoutY);
         }
 
         vertexNodes[vertexId] = newVertex;
         vertexPane.getChildren().add(newVertex);
 
-        // Remove old decoration if present
-        if (portDecorations[vertexId] != null) {
-            vertexPane.getChildren().remove(portDecorations[vertexId]);
-            portDecorations[vertexId] = null;
+        // -------------------------
+        // PORT RENDERING (Improved)
+        // -------------------------
+
+        int portId = vertexToPort[vertexId];
+
+        if (portId == -1) return;
+
+        // Render only once (first vertex in pair)
+        int v1 = viewModel.getPorts()[portId][0];
+        if (vertexId != v1) return;
+
+        // Remove old port node if present
+        if (portDecorations[portId] != null) {
+            portsPane.getChildren().remove(portDecorations[portId]);
+            portDecorations[portId] = null;
         }
 
-        if (vertexToPort[vertexId] != -1) {
-            Circle portRing = new Circle(15);
-            portRing.setFill(Color.TRANSPARENT);
-            portRing.setStroke(Color.CRIMSON);
-            portRing.setStrokeWidth(3);
-            portRing.setLayoutX(layoutX);
-            portRing.setLayoutY(layoutY);
-            portRing.setMouseTransparent(true);
+        int v2 = viewModel.getPorts()[portId][1];
 
-            portDecorations[vertexId] = portRing;
-            vertexPane.getChildren().add(portRing);
-        }
+        Shape vertex1 = vertexNodes[v1];
+        Shape vertex2 = vertexNodes[v2];
+
+        double x1 = vertex1.getLayoutX();
+        double y1 = vertex1.getLayoutY();
+        double x2 = vertex2.getLayoutX();
+        double y2 = vertex2.getLayoutY();
+
+        // Midpoint
+        double midX = (x1 + x2) / 2;
+        double midY = (y1 + y2) / 2;
+
+        Bounds centerTileBounds = tileGroup[9].getBoundsInParent();
+
+        // Extract x and y into separate variables
+        double boardCenterX = centerTileBounds.getMinX();
+        double boardCenterY = centerTileBounds.getMinY();
+
+        double dx = midX - boardCenterX;
+        double dy = midY - boardCenterY;
+        double length = Math.hypot(dx, dy);
+
+        double pushDistance = 80;
+
+        double finalX = midX + (dx / length) * pushDistance;
+        double finalY = midY + (dy / length) * pushDistance;
+
+        // ------------------------
+        // SYMBOL-BASED PORT BADGE
+        // ------------------------
+        
+        StackPane badge = createSymbolPortBadge();
+
+        // Center badge
+        badge.setLayoutX(finalX);
+        badge.setLayoutY(finalY);
+
+        // Rotate outward
+        double angle = Math.toDegrees(Math.atan2(dy, dx));
+        badge.setRotate(angle + 90);
+
+        badge.setMouseTransparent(true);
+
+        portDecorations[portId] = badge;
+        //portsPane.getChildren().add(badge);
     }
 
-    private Shape createCircleVertex(Color fillColor, double layoutX, double layoutY) {
+    private StackPane createSymbolPortBadge() 
+    {
+        StackPane root = new StackPane();
+
+        Circle bg = new Circle(22);
+        bg.setFill(Color.BEIGE);
+        bg.setStroke(Color.SADDLEBROWN);
+        bg.setStrokeWidth(3);
+
+        Text questionMark = new Text("?");
+        questionMark.setFont(mainFont);
+        questionMark.setFill(Color.BLACK);
+
+        root.getChildren().addAll(bg, questionMark);
+
+        return root;
+    }
+
+    private Shape createCircleVertex(Color fillColor, double layoutX, double layoutY) 
+    {
         double radius = 12;
         Circle circle = new Circle(radius);
         circle.setFill(fillColor);
@@ -756,14 +807,14 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
             return;
 
         Platform.runLater(() -> {
-            tileGroup[index].setOpacity(disabled ? 0.5 : 1.0);
+            tileGroup[index].setOpacity(disabled ? 0.2 : 1.0);
             tileGroup[index].setMouseTransparent(disabled);
         });
     }
 
     private void createCatanBoard(Pane boardPane) {
-        double hexWidth = 120;
-        double hexHeight = 120;
+        double hexWidth = 115;
+        double hexHeight = 115;
         double gap = 34;
         double rightShift = 100;
         double totalHeight = 864;
@@ -778,7 +829,7 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
         int id = 0;
 
         // --- Background ---
-        Polygon background = createFlatTopHex(hexWidth * 7.60, totalHeight - 130);
+        Polygon background = createFlatTopHex(hexWidth * 8, totalHeight - 92);
 
         // I Will want to bring this back at some point, just having a bit of a layering
         // issue

@@ -42,6 +42,8 @@ public class CurrentPlayerController {
     private Button tradeButton;
     @FXML
     private Button endTurnButton;
+    @FXML
+    private Polygon smallTriangle;
 
     // @FXML
     // private Label die1Value;
@@ -75,7 +77,6 @@ public class CurrentPlayerController {
         // initialize
         populateResources(currentPlayer.get());
         
-
         // Buttons
         buildSettlementButton.disableProperty().bind(
                 Bindings.selectBoolean(currentPlayer, "canBuildSettlement").not());

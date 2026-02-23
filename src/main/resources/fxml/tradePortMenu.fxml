@@ -31,26 +31,26 @@
                -fx-text-fill: white;" />
 
     <HBox fx:id="giveResourceBox"
-        spacing="100"
+        spacing="10"
         alignment="CENTER"
-        prefWidth="700">
+        prefWidth="400">
 
         <!-- Added Dynamically -->
 
     </HBox>
 
     <HBox fx:id="selectPortBox"
-        spacing="100"
+        spacing="10"
         alignment="CENTER"
-        prefWidth="700">
+        prefWidth="400">
 
         <!-- Added Dynamically -->
     </HBox>
 
     <HBox fx:id="receiveResourceBox"
-        spacing="100"
+        spacing="10"
         alignment="CENTER"
-        prefWidth="700">
+        prefWidth="400">
 
         <!-- Added Dynamically -->
     </HBox>
