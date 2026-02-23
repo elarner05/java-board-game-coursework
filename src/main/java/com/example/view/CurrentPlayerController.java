@@ -42,6 +42,8 @@ public class CurrentPlayerController {
     @FXML
     private Button buildDevCardButton;
     @FXML
+    private Button repairTileButton;
+    @FXML
     private Button rollDiceButton;
     @FXML
     private Button buildButton;
@@ -97,6 +99,8 @@ public class CurrentPlayerController {
                 Bindings.selectBoolean(currentPlayer, "canBuildRoad").not());
         buildDevCardButton.disableProperty().bind(
                 Bindings.selectBoolean(currentPlayer, "canBuildDevCard").not());
+        repairTileButton.disableProperty().bind(
+                Bindings.selectBoolean(currentPlayer, "canRepairTile").not());
         rollDiceButton.visibleProperty().bind(
                 viewModel.turnStateProperty().isEqualTo(TurnState.DICE_ROLL));
         buildRoadButton.visibleProperty().bind(
@@ -113,6 +117,8 @@ public class CurrentPlayerController {
                 viewModel.turnStateProperty().isEqualTo(TurnState.BUILD));
         tradeButton.visibleProperty().bind(
                 viewModel.turnStateProperty().isEqualTo(TurnState.TRADE));
+        repairTileButton.visibleProperty().bind(
+                viewModel.turnStateProperty().isEqualTo(TurnState.BUILD));
     }
 
     private void populateDevCards() {
@@ -217,5 +223,10 @@ public class CurrentPlayerController {
     @FXML
     private void buildDevCard() {
         viewModel.buildDevCard();
+    }
+
+    @FXML
+    private void repairTile() {
+        viewModel.switchToRepairTileState();
     }
 }

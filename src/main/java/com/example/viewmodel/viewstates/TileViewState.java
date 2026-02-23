@@ -11,4 +11,5 @@ public final class TileViewState {
     public final IntegerProperty number = new SimpleIntegerProperty();
     public final ObjectProperty<String> resource = new SimpleObjectProperty<>();
     public final BooleanProperty blocked = new SimpleBooleanProperty();
+    public final BooleanProperty destroyed = new SimpleBooleanProperty();
 }

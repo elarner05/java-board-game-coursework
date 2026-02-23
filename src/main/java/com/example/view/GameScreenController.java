@@ -37,6 +37,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.scene.Node;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.layout.Region;
 
 public class GameScreenController implements ViewModelAware<GameViewModel> {
@@ -73,6 +74,8 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
     private StackPane popupOverlay;
     @FXML
     private StackPane tradingMenuPopup, selectResourcePopup;
+    @FXML
+    private Polygon numberArrow;
 
     // Static holder for names before screen loads
     private Shape[] vertexNodes = new Shape[54]; // can hold Circle or Rectangle
@@ -144,7 +147,6 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
             setPlayerIndents();
         });
 
-
         try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/fxml/currentPlayer.fxml"));
@@ -171,6 +173,17 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
             }
         });
 
+        viewModel.climateTrackerProperty().addListener((obs, oldNum, newNum) -> {
+            updateClimateTrackerArrow(newNum.intValue());
+        });
+        updateClimateTrackerArrow(viewModel.climateTrackerProperty().get());
+
+    }
+
+    private void updateClimateTrackerArrow(int climateLevel) {
+        System.out.println("Updating climate tracker arrow to level " + climateLevel); // Debug
+        int offset = climateLevel * 27; // adjust as needed for spacing
+        numberArrow.setLayoutX(offset + 55);
     }
 
     private void bindTradingMenu() {
@@ -180,7 +193,7 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
             TradingMenuController ctrl = loader.getController();
             ctrl.bind(viewModel);
 
-            //row.setUserData(player); // store reference for removal
+            // row.setUserData(player); // store reference for removal
             menu.maxHeight(Region.USE_PREF_SIZE);
             tradingMenuPopup.getChildren().add(menu);
 
@@ -196,7 +209,7 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
             SelectResourceMenuController ctrl = loader.getController();
             ctrl.bind(viewModel);
 
-            //row.setUserData(player); // store reference for removal
+            // row.setUserData(player); // store reference for removal
             menu.maxHeight(Region.USE_PREF_SIZE);
             selectResourcePopup.getChildren().add(menu);
 
@@ -220,34 +233,29 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
         }
     }
 
-    private void bindTriangle(){
+    private void bindTriangle() {
 
         ObjectProperty<PlayerViewState> currentPlayer = viewModel.currentPlayerProperty();
 
-         // Background color
+        // Background color
         smallTriangle.fillProperty().bind(
                 Bindings.select(currentPlayer, "color"));
         smallTriangle.strokeProperty().bind(
                 Bindings.select(currentPlayer, "color"));
     }
 
-
-
     private void removePlayerRow(PlayerViewState player) {
         playerList.getChildren().removeIf(node -> node.getUserData() == player);
     }
 
     private void setPlayerIndents() {
-        for(int i = 0; i < playerList.getChildren().size(); i++)
-        {
+        for (int i = 0; i < playerList.getChildren().size(); i++) {
             Node row = playerList.getChildren().get(i);
 
             row.setTranslateX(0);
             row.setTranslateX(60 * i);
         }
     }
-
-    
 
     private void bindTile(int index, TileViewState state) {
         state.number.addListener((obs, old, val) -> {
@@ -256,12 +264,22 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
         });
 
         state.blocked.addListener((obs, old, val) -> {
+            setTile(index, state.number.get(), resolveColor(state.resource.get()));
+            attachTileClickHandler(index, tileGroup[index]);
             setTileDisabled(index, val);
+        });
+
+        state.destroyed.addListener((obs, old, val) -> {
+            setTile(index, state.number.get(), resolveColor(state.resource.get()));
+            attachTileClickHandler(index, tileGroup[index]);
+            setTileDestroyed(index, val);
         });
 
         setTile(index, state.number.get(), resolveColor(state.resource.get()));
         attachTileClickHandler(index, tileGroup[index]);
         setTileDisabled(index, state.blocked.get());
+        setTileDestroyed(index, state.destroyed.get());
+
     }
 
     private void bindVertex(int id, VertexViewState state) {
@@ -313,7 +331,9 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
 
         // Load font from classpath
         try {
-            //mainFont = Font.loadFont(getClass().getResourceAsStream("/fonts/NotoSans-Regular.ttf"), 40);
+            // mainFont =
+            // Font.loadFont(getClass().getResourceAsStream("/fonts/NotoSans-Regular.ttf"),
+            // 40);
             mainFont = Font.loadFont(getClass().getResourceAsStream("/fonts/Oswald-Regular.ttf"), 50);
             italicFont = Font.loadFont(getClass().getResourceAsStream("/fonts/NotoSans-Italic.ttf"), 40);
         } catch (Exception e) {
@@ -330,13 +350,13 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
         mainPentagon.toBack();
 
         popupOverlay.visibleProperty()
-            .bind(GameUIState.popupVisible);
+                .bind(GameUIState.popupVisible);
 
         tradingMenuPopup.visibleProperty()
-            .bind(GameUIState.tradingMenuVisible);
+                .bind(GameUIState.tradingMenuVisible);
 
         selectResourcePopup.visibleProperty()
-            .bind(GameUIState.selectResourceMenuVisible);
+                .bind(GameUIState.selectResourceMenuVisible);
 
     }
 
@@ -550,7 +570,7 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
 
             // Create rectangle
             Rectangle road = new Rectangle();
-            road.setX(0);             // rectangle origin at (0,0)
+            road.setX(0); // rectangle origin at (0,0)
             road.setY(0);
             road.setWidth(roadLength);
             road.setHeight(roadWidth);
@@ -642,10 +662,10 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
         tile.getChildren().add(pips);
     }
 
-    private void attachTileClickHandler(int index, Group tile){
-        tile.setOnMouseClicked(event ->{
+    private void attachTileClickHandler(int index, Group tile) {
+        tile.setOnMouseClicked(event -> {
             event.consume();
-            viewModel.moveRobber(index);
+            viewModel.onTileClicked(index);
         });
     }
 
@@ -759,7 +779,7 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
 
             // Optional visual feedback
             TurnState turnState = viewModel.turnStateProperty().get();
-            if(turnState == TurnState.BUILD_ROAD || turnState == TurnState.HIGHWAY_MADNESS) {
+            if (turnState == TurnState.BUILD_ROAD || turnState == TurnState.HIGHWAY_MADNESS) {
                 road.setStroke(Color.YELLOW);
             } else {
                 road.setStroke(Color.BLACK);
@@ -799,6 +819,37 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
         Platform.runLater(() -> {
             tileGroup[index].setOpacity(disabled ? 0.5 : 1.0);
             tileGroup[index].setMouseTransparent(disabled);
+        });
+    }
+
+    private void setTileDestroyed(int index, boolean destroyed) {
+        if (!isValidIndex(index))
+            return;
+
+        Platform.runLater(() -> {
+            Group tile = tileGroup[index];
+
+            // Remove existing overlay if any
+            tile.getChildren().removeIf(n -> n.getUserData() != null && n.getUserData().equals("destroyOverlay"));
+
+            if (destroyed) {
+                // Get the main hex shape
+                Polygon hex = (Polygon) tile.getChildren().get(0);
+
+                // Create a new Polygon overlay that matches the hex points
+                Polygon overlay = new Polygon();
+                overlay.getPoints().addAll(hex.getPoints());
+                overlay.setFill(Color.color(0, 0, 0, 0.7)); // 70% black
+                overlay.setUserData("destroyOverlay");
+
+                // Position overlay exactly on top
+                overlay.layoutXProperty().bind(hex.layoutXProperty());
+                overlay.layoutYProperty().bind(hex.layoutYProperty());
+
+                tile.getChildren().add(overlay);
+
+                // Keep tile interactive
+            }
         });
     }
 

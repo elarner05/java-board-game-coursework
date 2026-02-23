@@ -32,16 +32,22 @@ public class ClimateTracker {
 
     public int disasterCardNum() {
         int totalCards = 0;
-        if (nextDisasterCard >= 5) {
+        if (nextDisasterCard > 5) {
             totalCards++;
         }
-        if (nextDisasterCard >= 10) {
+        if (nextDisasterCard > 10) {
             totalCards++;
         }
-        if (nextDisasterCard >= 15) {
+        if (nextDisasterCard > 15) {
             totalCards++;
         }
         return totalCards;
+    }
+
+    public void resetClimateLevels() {
+        climateLevel = 0;
+        nextDisasterCard = 5;
+        giveDisasterCard = false;
     }
     
 }

@@ -189,8 +189,9 @@ public class Tiles {
         for (int i = 0; i < allTiles.length; i++){
             if (allTiles[i].getNumber() == diceroll){
                 //tile has the desired value
-                if (!allTiles[i].getIsBlocked())
+                if (!allTiles[i].getIsBlocked() && !allTiles[i].getIsDestroyed()){
                     tilesWithDiceroll.add(allTiles[i]);
+                }
             }
         }
 
@@ -218,6 +219,12 @@ public class Tiles {
             }
         }
         return -1; // No blocked tile found
+    }
+
+    public void repareTiles() {
+        for (Tile tile : tiles) {
+            tile.setIsDestroyed(false);
+        }
     }
 
     
