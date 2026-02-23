@@ -228,6 +228,11 @@
                             text="Build Dev Card"
                             prefWidth="250"
                             styleClass="action-button"/>
+                        <Button fx:id="repairTileButton"
+                            onAction="#repairTile"
+                            text="Repair Tile"
+                            prefWidth="250"
+                            styleClass="action-button"/>
                         <Button fx:id="tradeButton"
                             onAction="#showTradingMenu"
                             text="Trade"
