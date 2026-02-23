@@ -3,6 +3,7 @@ package com.example.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.example.model.config.DevCardConfig;
 import com.example.model.config.PlayerInfrastructureConfig;
 import com.example.model.config.ResourceConfig;
 import com.example.model.config.registry.ResourceRegistry;
@@ -10,6 +11,7 @@ import com.example.model.config.service.ConfigService;
 
 /**
  * Player Class; stores per player info
+ * 
  * @author 40452739
  */
 public class Player {
@@ -23,13 +25,15 @@ public class Player {
     private ArrayList<String> devCards;
     private HashMap<String, Integer> structuresRemaining;
 
+    private int tilesRestored;
 
     private int victoryPoints;
     private int hiddenVictoryPoints;
 
     /**
      * Player Class Constructor
-     * @param name  name of the player
+     * 
+     * @param name name of the player
      */
     public Player(String name) { // Maybe pass in the starting structuresRemaining?
 
@@ -38,7 +42,7 @@ public class Player {
         this.name = (name != null ? name : "");
 
         this.resources = new HashMap<>();
-        for (ResourceConfig t: ResourceRegistry.getInstance().all()) {
+        for (ResourceConfig t : ResourceRegistry.getInstance().all()) {
             this.resources.put(t, 0);
         }
 
@@ -53,12 +57,14 @@ public class Player {
             this.structuresRemaining.put(structureTypes.get(i), startingCount);
         }
 
+        tilesRestored = 0;
         victoryPoints = 0;
         hiddenVictoryPoints = 0;
     }
 
     /**
      * Getter for player object's id
+     * 
      * @return Player.id
      */
     public int getId() {
@@ -67,6 +73,7 @@ public class Player {
 
     /**
      * Getter for name
+     * 
      * @return Player.name
      */
     public String getName() {
@@ -75,6 +82,7 @@ public class Player {
 
     /**
      * Setter for name
+     * 
      * @param newName the new name of the player
      * @return success of the operation
      */
@@ -88,7 +96,8 @@ public class Player {
 
     /**
      * Getter for resource count
-     * @param type  the type being set
+     * 
+     * @param type the type being set
      * @return resource count
      */
     public int getResourceCount(ResourceConfig type) {
@@ -101,11 +110,12 @@ public class Player {
 
     /**
      * Getter for total number of resources
+     * 
      * @return the total number of resources
      */
     public int getTotalResources() {
         int total = 0;
-        
+
         for (ResourceConfig type : this.resources.keySet()) {
             total += this.resources.get(type);
         }
@@ -115,7 +125,8 @@ public class Player {
 
     /**
      * Set for a type of resource
-     * @param type type of resource to be set
+     * 
+     * @param type  type of resource to be set
      * @param count number of this resource
      * @return success of the operation
      */
@@ -130,7 +141,8 @@ public class Player {
 
     /**
      * Change a given resource by an amount
-     * @param type type of resource to change
+     * 
+     * @param type   type of resource to change
      * @param change the amount of change; can be negative or positive
      * @return success of the operation
      */
@@ -151,6 +163,7 @@ public class Player {
 
     /**
      * Get a card at a given index (indices do not change)
+     * 
      * @param index index of the card
      * @return the card
      */
@@ -164,6 +177,7 @@ public class Player {
 
     /**
      * Adds a card to the players hand
+     * 
      * @param card card to be added
      * @return success of the operation
      */
@@ -179,12 +193,12 @@ public class Player {
 
     /**
      * Remove the first occurrence of a development card from the player's hand.
+     * 
      * @return true if a card was removed
      */
     public boolean removeCard(String card) {
         return this.devCards.remove(card);
     }
-
 
     public int getVictoryPoints(int playerId) {
         return this.victoryPoints;
@@ -192,6 +206,7 @@ public class Player {
 
     /**
      * Checks whether a given card type is stored
+     * 
      * @param type type of the card
      * @return whether the card is owned at least once
      */
@@ -207,6 +222,7 @@ public class Player {
 
     /**
      * Gets the amount of devCards of a given type is owned by the player
+     * 
      * @param type type of the card being searched
      * @return the number of devCards of the type
      */
@@ -225,6 +241,7 @@ public class Player {
 
     /**
      * Getter for the total number of devCards
+     * 
      * @return the total number of devCards
      */
     public int numberOfCards() {
@@ -234,7 +251,7 @@ public class Player {
     /**
      * Check whether this player has depleted their structuresRemaining list
      * 
-     * @param  type  the type of structure that is being checked
+     * @param type the type of structure that is being checked
      * @return whether this player has depleted this structure type
      */
     public boolean depletedStructures(String type) {
@@ -246,6 +263,7 @@ public class Player {
 
     /**
      * Gets how many structures of a given type are left
+     * 
      * @param type type of structure
      * @return number left
      */
@@ -258,7 +276,8 @@ public class Player {
 
     /**
      * Change the number of stuctures of a type remaining
-     * @param type type of structure
+     * 
+     * @param type   type of structure
      * @param change the amount its changing; positive or negative
      * @return success of the operation
      */
@@ -277,7 +296,8 @@ public class Player {
 
     /**
      * Set a number of remaining structures for a given type
-     * @param type type of the structure
+     * 
+     * @param type  type of the structure
      * @param count the amount of structures left for the player
      * @return
      */
@@ -292,6 +312,7 @@ public class Player {
 
     /**
      * Setter for the structuresRemaining HashMap; probably not used
+     * 
      * @param newStructures the new structuresRemaining hash map
      * @return success of the operation
      */
@@ -306,20 +327,31 @@ public class Player {
 
     /**
      * Fully empties the structuresRemaining; sets them all to 0
-     */    
+     */
     public void emptyStructuresRemaining() {
         for (String key : this.structuresRemaining.keySet()) {
             this.structuresRemaining.put(key, 0);
         }
     }
 
+    public int getTilesRestored() {
+        return this.tilesRestored;
+    }
+
+    public void increaseTilesRestored(){
+        this.tilesRestored++;
+    }
+
     /**
      * Creates a printable string version of the Player
+     * 
      * @return the string
      */
     @Override
     public String toString() {
-        return "Player { id=" + this.id + ", name=" + this.name + ", resources=" + this.resources + ", devCards=" + this.devCards + ", hiddenVP=" + this.hiddenVictoryPoints + ", structuresRemaining=" + this.structuresRemaining + " }";
+        return "Player { id=" + this.id + ", name=" + this.name + ", resources=" + this.resources + ", devCards="
+                + this.devCards + ", hiddenVP=" + this.hiddenVictoryPoints + ", structuresRemaining="
+                + this.structuresRemaining + " }";
     }
 
     public boolean hasEnoughResourcesForStructure(String structureType) {
@@ -333,7 +365,7 @@ public class Player {
         }
         return true;
     }
-    
+
     public boolean deductStructureResources(String structureType) {
         boolean success = true;
         PlayerInfrastructureConfig structureConfig = ConfigService.getInfrastructure(structureType);
@@ -342,7 +374,8 @@ public class Player {
             ResourceConfig resourceConfig = ConfigService.getResource(resource);
             int cost = structureConfig.constructionCosts.get(resource);
             // System.out.println(" - " + cost + " of " + resource);
-            // System.out.println("   Current amount: " + this.getResourceCount(resourceConfig));
+            // System.out.println(" Current amount: " +
+            // this.getResourceCount(resourceConfig));
             success = success && this.changeResourceCount(resourceConfig, -cost);
         }
         return success;
@@ -364,6 +397,7 @@ public class Player {
     public int getTotalVictoryPoints() {
         return victoryPoints + hiddenVictoryPoints;
     }
+
     public int getKnownVictoryPoints() {
         return victoryPoints;
     }
@@ -396,5 +430,17 @@ public class Player {
         ResourceConfig stolenResource = ownedResources.get(randomIndex);
         this.changeResourceCount(stolenResource, -1); // Remove one of the stolen resource
         return stolenResource;
+    }
+
+    public ArrayList<DevCardConfig> getDevCards() {
+        ArrayList<DevCardConfig> devCardConfigs = new ArrayList<>();
+        for (String cardId : this.devCards) {
+            DevCardConfig cardConfig = ConfigService.getDevCard(cardId);
+            if (cardConfig != null) {
+                devCardConfigs.add(cardConfig);
+            }
+        }
+        return devCardConfigs;
+
     }
 }

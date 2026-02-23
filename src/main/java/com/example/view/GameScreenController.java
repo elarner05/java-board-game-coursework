@@ -8,13 +8,16 @@ import java.util.List;
 import java.util.Map;
 
 import com.example.viewmodel.GameViewModel;
+import com.example.viewmodel.TurnState;
 import com.example.viewmodel.viewstates.GameUIState;
 import com.example.viewmodel.viewstates.PlayerViewState;
 import com.example.viewmodel.viewstates.RoadViewState;
 import com.example.viewmodel.viewstates.TileViewState;
 import com.example.viewmodel.viewstates.VertexViewState;
 
+import javafx.beans.binding.Bindings;
 import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -33,6 +36,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Rotate;
 import javafx.scene.Node;
 import javafx.scene.layout.Region;
 import javafx.beans.binding.Bindings;
@@ -55,11 +59,11 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
     @FXML
     private Polygon mainPentagon;
     @FXML
+    private Polygon smallTriangle;
+    @FXML
     private Pane rootPane, catanBoardPane;
     @FXML
     private Pane playerColumnPane;
-    @FXML
-    private Polygon smallTriangle;
 
     @FXML
     private Polygon numberArrow;
@@ -73,7 +77,7 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
     @FXML
     private StackPane popupOverlay;
     @FXML
-    private StackPane popupBox;
+    private StackPane tradingMenuPopup, selectResourcePopup;
 
     // Static holder for names before screen loads
     private Shape[] vertexNodes = new Shape[54]; // can hold Circle or Rectangle
@@ -129,6 +133,8 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
 
         setPlayerIndents();
 
+        bindTriangle();
+
         // Listen for changes
         players.addListener((ListChangeListener<PlayerViewState>) change -> {
             while (change.next()) {
@@ -147,6 +153,7 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
             setPlayerIndents();
         });
 
+
         try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/fxml/currentPlayer.fxml"));
@@ -155,13 +162,23 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
             CurrentPlayerController ctrl = loader.getController();
             ctrl.bindCurrentPlayer(viewModel);
             bottomPane.getChildren().add(node);
-            
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         bindTradingMenu();
+        bindSelectResourceMenu();
+
+        viewModel.turnStateProperty().addListener((obs, oldState, newState) -> {
+            if (newState == TurnState.MONOPOLY || newState == TurnState.TRADE_FRENZY) {
+                GameUIState.selectResourceMenuVisible.set(true);
+                GameUIState.popupVisible.set(true);
+            } else {
+                GameUIState.selectResourceMenuVisible.set(false);
+                GameUIState.popupVisible.set(false);
+            }
+        });
 
     }
 
@@ -174,7 +191,23 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
 
             //row.setUserData(player); // store reference for removal
             menu.maxHeight(Region.USE_PREF_SIZE);
-            popupBox.getChildren().add(menu);
+            tradingMenuPopup.getChildren().add(menu);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void bindSelectResourceMenu() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/selectResourceMenu.fxml"));
+            Node menu = loader.load();
+            SelectResourceMenuController ctrl = loader.getController();
+            ctrl.bind(viewModel);
+
+            //row.setUserData(player); // store reference for removal
+            menu.maxHeight(Region.USE_PREF_SIZE);
+            selectResourcePopup.getChildren().add(menu);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -195,6 +228,19 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
             e.printStackTrace();
         }
     }
+
+    private void bindTriangle(){
+
+        ObjectProperty<PlayerViewState> currentPlayer = viewModel.currentPlayerProperty();
+
+         // Background color
+        smallTriangle.fillProperty().bind(
+                Bindings.select(currentPlayer, "color"));
+        smallTriangle.strokeProperty().bind(
+                Bindings.select(currentPlayer, "color"));
+    }
+
+
 
     private void removePlayerRow(PlayerViewState player) {
         playerList.getChildren().removeIf(node -> node.getUserData() == player);
@@ -294,6 +340,12 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
 
         popupOverlay.visibleProperty()
             .bind(GameUIState.popupVisible);
+
+        tradingMenuPopup.visibleProperty()
+            .bind(GameUIState.tradingMenuVisible);
+
+        selectResourcePopup.visibleProperty()
+            .bind(GameUIState.selectResourceMenuVisible);
 
     }
 
@@ -445,12 +497,12 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
             vertexPane.getChildren().add(vertex);
 
             // Add vertex ID label above
-            // Text label = new Text(String.valueOf(vertexId));
-            // label.setFill(Color.INDIGO);
-            // label.setFont(Font.font(12));
-            // label.setLayoutX(avgX - 4);
-            // label.setLayoutY(avgY - 12);
-            // vertexPane.getChildren().add(label);
+            Text label = new Text(String.valueOf(vertexId));
+            label.setFill(Color.INDIGO);
+            label.setFont(Font.font(12));
+            label.setLayoutX(avgX - 4);
+            label.setLayoutY(avgY - 12);
+            vertexPane.getChildren().add(label);
         }
     }
 
@@ -463,6 +515,7 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
         roadNodes = new Shape[roadVertices.length];
 
         double shorten = 16; // pixels to shorten at each end
+        double roadWidth = 12; // road thickness
 
         for (int roadId = 0; roadId < roadVertices.length; roadId++) {
             int v1 = roadVertices[roadId][0];
@@ -498,15 +551,18 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
             double midX = (startX + endX) / 2;
             double midY = (startY + endY) / 2;
 
-            // New length
+            // Road length
             double roadLength = Math.hypot(endX - startX, endY - startY);
 
-            // Rotation angle
+            // Rotation angle in degrees
             double angle = Math.toDegrees(Math.atan2(endY - startY, endX - startX));
 
             // Create rectangle
-            double roadWidth = 9;
-            Rectangle road = new Rectangle(roadLength, roadWidth);
+            Rectangle road = new Rectangle();
+            road.setX(0);             // rectangle origin at (0,0)
+            road.setY(0);
+            road.setWidth(roadLength);
+            road.setHeight(roadWidth);
             road.setFill(Color.GRAY);
             road.setStroke(Color.BLACK);
             road.setStrokeWidth(1);
@@ -514,8 +570,12 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
             // Center rectangle on midpoint
             road.setTranslateX(midX - roadLength / 2);
             road.setTranslateY(midY - roadWidth / 2);
+
+            // Rotate around center
+            road.setRotationAxis(Rotate.Z_AXIS);
             road.setRotate(angle);
 
+            // Add to arrays/pane
             roadNodes[roadId] = road;
             roadsPane.getChildren().add(road);
         }
@@ -764,6 +824,7 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
         if (roadShape instanceof Rectangle rect) {
             rect.setFill(fillColor);
         }
+        roadShape.setStroke(Color.BLACK);
     }
 
     private void attachRoadClickHandler(Shape road, int roadId) {
@@ -774,6 +835,12 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
             viewModel.onRoadClicked(roadId);
 
             // Optional visual feedback
+            TurnState turnState = viewModel.turnStateProperty().get();
+            if(turnState == TurnState.BUILD_ROAD || turnState == TurnState.HIGHWAY_MADNESS) {
+                road.setStroke(Color.YELLOW);
+            } else {
+                road.setStroke(Color.BLACK);
+            }
         });
 
         // Optional hover feedback
@@ -807,7 +874,7 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
             return;
 
         Platform.runLater(() -> {
-            tileGroup[index].setOpacity(disabled ? 0.2 : 1.0);
+            tileGroup[index].setOpacity(disabled ? 0.5 : 1.0);
             tileGroup[index].setMouseTransparent(disabled);
         });
     }

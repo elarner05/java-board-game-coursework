@@ -13,9 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
-
-
-
+import java.util.HashMap;
 
 /**
  * Unit tests for GameModel class
@@ -26,7 +24,10 @@ public class GameModelTest {
 
     @BeforeAll
     public static void setup() throws Exception {
-        try {ConfigManager.loadAll();} catch (Exception e) { } // needed to load ResourceRegistry if not loaded, throws if already loaded
+        try {
+            ConfigManager.loadAll();
+        } catch (Exception e) {
+        } // needed to load ResourceRegistry if not loaded, throws if already loaded
     }
 
     @BeforeEach
@@ -103,7 +104,7 @@ public class GameModelTest {
         int player1Id = gameModel.getPlayers().get(0).getId();
         int player2Id = gameModel.getPlayers().get(1).getId();
         int player3Id = gameModel.getPlayers().get(2).getId();
-        
+
         assertEquals(player2Id, gameModel.nextPlayer(player1Id));
         assertEquals(player3Id, gameModel.nextPlayer(player2Id));
         assertEquals(player1Id, gameModel.nextPlayer(player3Id));
@@ -145,7 +146,7 @@ public class GameModelTest {
         gameModel.initializePlayers(playerNames);
         int playerId = gameModel.getPlayers().get(0).getId();
         gameModel.giveSettlementResources(playerId);
-        
+
         boolean result = gameModel.buildSettlement(0, playerId);
         // Result depends on Settlements logic
         assertTrue(result);
@@ -156,7 +157,7 @@ public class GameModelTest {
         gameModel.initializePlayers(playerNames);
         int playerId = gameModel.getPlayers().get(0).getId();
         assertFalse(gameModel.playerHasSettlementResources(playerId));
-        
+
         gameModel.giveSettlementResources(playerId);
         assertTrue(gameModel.playerHasSettlementResources(playerId));
     }
@@ -167,7 +168,7 @@ public class GameModelTest {
         int playerId = gameModel.getPlayers().get(0).getId();
         gameModel.giveSettlementResources(playerId);
         gameModel.giveCityResources(playerId);
-        
+
         gameModel.buildSettlement(0, playerId); // First build settlement
         boolean result = gameModel.buildCity(0, playerId);
         // Result depends on Settlements logic
@@ -179,7 +180,7 @@ public class GameModelTest {
         gameModel.initializePlayers(playerNames);
         int playerId = gameModel.getPlayers().get(0).getId();
         assertFalse(gameModel.playerHasCityResources(playerId));
-        
+
         gameModel.giveCityResources(playerId);
         assertTrue(gameModel.playerHasCityResources(playerId));
     }
@@ -189,7 +190,7 @@ public class GameModelTest {
         gameModel.initializePlayers(playerNames);
         int playerId = gameModel.getPlayers().get(0).getId();
         gameModel.giveRoadResources(playerId);
-        
+
         boolean result = gameModel.buildRoad(0, playerId);
         // Result depends on Roads logic
         assertTrue(result);
@@ -200,7 +201,7 @@ public class GameModelTest {
         gameModel.initializePlayers(playerNames);
         int playerId = gameModel.getPlayers().get(0).getId();
         assertFalse(gameModel.playerHasRoadResources(playerId));
-        
+
         gameModel.giveRoadResources(playerId);
         assertTrue(gameModel.playerHasRoadResources(playerId));
     }
@@ -227,11 +228,15 @@ public class GameModelTest {
         gameModel.initializePlayers(playerNames);
         ResourceConfig wood = ConfigService.getResource("resource.wood");
         ResourceConfig brick = ConfigService.getResource("resource.brick");
-         
+
         int playerId = gameModel.getPlayers().get(0).getId();
         gameModel.getPlayer(playerId).setResourceCount(wood, 10);
         gameModel.getPlayer(playerId).setResourceCount(brick, 10);
-        TradePlayer trade = new TradePlayer(playerId, playerId, wood, 1, brick, 1);
+        HashMap<ResourceConfig, Integer> offer = new HashMap<>();
+        offer.put(wood, 1);
+        HashMap<ResourceConfig, Integer> request = new HashMap<>();
+        request.put(brick, 1);
+        TradePlayer trade = new TradePlayer(playerId, playerId, offer, request);
         assertFalse(gameModel.validTrade(trade));
     }
 
@@ -244,7 +249,11 @@ public class GameModelTest {
         int player2Id = gameModel.getPlayers().get(1).getId();
 
         // no resources given to players, invalid trade
-        TradePlayer trade = new TradePlayer(player1Id, player2Id, wood, 10, brick, 1);
+        HashMap<ResourceConfig, Integer> offer = new HashMap<>();
+        offer.put(wood, 10);
+        HashMap<ResourceConfig, Integer> request = new HashMap<>();
+        request.put(brick, 1);
+        TradePlayer trade = new TradePlayer(player1Id, player2Id, offer, request);
         assertFalse(gameModel.validTrade(trade));
     }
 
@@ -259,11 +268,14 @@ public class GameModelTest {
         gameModel.getPlayer(player1Id).setResourceCount(wood, 10);
         gameModel.getPlayer(player2Id).setResourceCount(brick, 10);
 
-        TradePlayer trade = new TradePlayer(player1Id, player2Id, wood, 10, brick, 1);
+        HashMap<ResourceConfig, Integer> offer = new HashMap<>();
+        offer.put(wood, 10);
+        HashMap<ResourceConfig, Integer> request = new HashMap<>();
+        request.put(brick, 1);
+
+        TradePlayer trade = new TradePlayer(player1Id, player2Id, offer, request);
         assertTrue(gameModel.validTrade(trade));
     }
-
-    
 
     @Test
     public void testValidTradeBankInsufficientPlayerResources() {
@@ -316,8 +328,13 @@ public class GameModelTest {
         ResourceConfig brick = ConfigService.getResource("resource.brick");
         gameModel.getPlayer(player1Id).setResourceCount(wood, 10);
         gameModel.getPlayer(player2Id).setResourceCount(brick, 10);
-        TradePlayer trade = new TradePlayer(player1Id, player2Id, wood, 10, brick, 1);
-        
+
+        HashMap<ResourceConfig, Integer> offer = new HashMap<>();
+        offer.put(wood, 10);
+        HashMap<ResourceConfig, Integer> request = new HashMap<>();
+        request.put(brick, 1);
+        TradePlayer trade = new TradePlayer(player1Id, player2Id, offer, request);
+
         boolean result = gameModel.executeTrade(trade);
         assertTrue(result);
     }

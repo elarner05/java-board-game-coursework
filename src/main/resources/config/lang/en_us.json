@@ -31,6 +31,10 @@
     "tile.fields.name": "Field",
     "tile.pasture.name": "Village",
     "tile.desert.name": "Utopia",
+    
+    "hint.turn.roll_dice": "Roll the dice to start your turn.",
+    "hint.turn.trade": "Trade resources, then choose your next action.",
+    "hint.turn.build": "Build infrastructure or end your turn.",
 
     "_comment": "Title Screen:",
     "playText": "Play Game",

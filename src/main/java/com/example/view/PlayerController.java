@@ -19,7 +19,7 @@ public class PlayerController {
 
     public void bind(PlayerViewState player) {
         nameLabel.textProperty().bind(player.nameProperty());
-        scoreLabel.textProperty().bind(player.scoreProperty().asString());
+        scoreLabel.textProperty().bind(player.knownScoreProperty().asString());
         longestRoadLabel.visibleProperty().bind(player.longestRoadProperty());
         cleanestEnvironmentLabel.visibleProperty().bind(player.cleanestEnvironmentProperty());
         colorBox.fillProperty().bind(player.colorProperty());

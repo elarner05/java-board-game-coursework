@@ -88,7 +88,7 @@ public class AdjacencyMaps {
 
     public static final int[][] PortVertices = {
         {0, 1},     // port 0
-        {5, 6},     // port 1
+        {5, 4},     // port 1
         {14, 15},   // port 2
         {26, 37},   // port 3
         {45, 46},   // port 4

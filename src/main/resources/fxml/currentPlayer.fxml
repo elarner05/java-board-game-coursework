@@ -72,13 +72,6 @@
                     styleClass="current-player-label" />
             </StackPane>
 
-            <!-- <VBox fx:id="currentPlayerResourcesBox"
-                alignment="CENTER"
-                spacing="5.0"
-                layoutY="90.0">
-                Resource labels will be added dynamically
-            </VBox> -->
-
             <!-- Score -->
             <StackPane prefWidth="100" prefHeight="80" alignment="CENTER">
                 <Polygon styleClass="progress-track-cont">
@@ -205,84 +198,14 @@
                                 <Double fx:value="275.0" />
                             </points>
                         </Polygon>
-                        <VBox alignment="TOP_CENTER" spacing="5">
+                        <VBox fx:id="devCardBox" alignment="TOP_CENTER" spacing="5">
                             <Label text="Dev Cards" styleClass="tracker-title" translateY="5"/>
-                            <GridPane hgap="5" vgap="5" alignment="CENTER">
-                                <!-- Row 0 -->
-                                <Rectangle GridPane.rowIndex="0" GridPane.columnIndex="0"
-                                        width="56" height="72" arcWidth="2" arcHeight="2"
-                                        styleClass="dev-card"/>
-                                <Rectangle GridPane.rowIndex="0" GridPane.columnIndex="1"
-                                        width="56" height="72" arcWidth="2" arcHeight="2"
-                                        styleClass="dev-card"/>
-                                
-                                <!-- Row 1 -->
-                                <Rectangle GridPane.rowIndex="1" GridPane.columnIndex="0"
-                                        width="56" height="72" arcWidth="2" arcHeight="2"
-                                        styleClass="dev-card"/>
-                                <Rectangle GridPane.rowIndex="1" GridPane.columnIndex="1"
-                                        width="56" height="72" arcWidth="2" arcHeight="2"
-                                        styleClass="dev-card"/>
-
-                                <!-- Row 2: Single rectangle spanning both columns -->
-                                <Rectangle GridPane.rowIndex="2" GridPane.columnIndex="0"
-                                        GridPane.columnSpan="2"
-                                        width="120"
-                                        height="72" arcWidth="2" arcHeight="2"
-                                        styleClass="dev-card"/>
-                            </GridPane>
                         </VBox>
                     </StackPane>
                 </VBox>
 
-                <!-- Score & Actions Column -->
+                <!-- Actions Column -->
                 <VBox spacing="2" prefWidth="250" translateX="10">
-
-                    <!-- Score & Dice side-by-side -->
-                    <!-- <HBox spacing="4" prefWidth="210" prefHeight="68" alignment="CENTER">
-                        <StackPane prefWidth="100" prefHeight="62" alignment="CENTER">
-                            <Polygon fill="white" stroke="black" strokeWidth="2">
-                                <points>
-                                    <Double fx:value="8.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="108.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="100.0" />
-                                    <Double fx:value="62.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="62.0" />
-                                </points>
-                            </Polygon>
-                            <VBox alignment="CENTER" spacing="2">
-                                <Label text="Dice" styleClass="tracker-title" />
-                                <Label fx:id="diceValue" styleClass="tracker-content"/>
-                            </VBox>
-                        </StackPane>
-
-                        <!- Dice ->
-                        <StackPane prefWidth="100" prefHeight="62" alignment="CENTER">
-                            <Polygon fill="white" stroke="black" strokeWidth="2">
-                                <points>
-                                    <Double fx:value="8.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="108.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="100.0" />
-                                    <Double fx:value="62.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="62.0" />
-                                </points>
-                            </Polygon>
-                            <VBox alignment="CENTER" spacing="2">
-                                <Label text="Dice"
-                                    style="-fx-font-size: 11; -fx-text-fill: black; -fx-font-weight: bold;" />
-                                <Label fx:id="die1Value"
-                                    style="-fx-font-size: 17; -fx-text-fill: black; -fx-font-weight: bold;" />
-                                <Label fx:id="die2Value"
-                                    style="-fx-font-size: 17; -fx-text-fill: black; -fx-font-weight: bold;" />
-                            </VBox>
-                        </StackPane>
-                    </HBox> -->
 
                     <!-- Action buttons -->
                     <VBox fx:id="actionButtonsBox" spacing="5" prefWidth="250"
@@ -316,8 +239,9 @@
                                 alignment="TOP_CENTER"
                                 prefWidth="250"
                                 styleClass="action-button"/>
-                        <Button fx:id="playDevCardButton"
-                            text="Play Dev Card"
+                        <Button fx:id="buildDevCardButton"
+                            onAction="#buildDevCard"
+                            text="Build Dev Card"
                             prefWidth="250"
                             styleClass="action-button"/>
                         <Button fx:id="tradeButton"
@@ -343,7 +267,7 @@
                                     prefHeight="60"
                                     styleClass="action-button"/>
                             <Button fx:id="endTurnButton"
-                                    onAction="#nextPlayer"
+                                    onAction="#endTurn"
                                     text="End Turn"
                                     prefWidth="250"
                                     prefHeight="60"
@@ -354,5 +278,14 @@
             </HBox>
         </VBox>
     </Pane>
+
+    <!-- hint -->
+    <StackPane alignment="CENTER_LEFT" 
+        layoutX="-700" layoutY="350"
+        prefWidth="420" prefHeight="52" viewOrder="100"> <!--  change 800 later  -->
+        <Rectangle width="420" height="52" styleClass="turn-hint-box" />
+        
+        <Label fx:id="turnHintLabel" styleClass="turn-hint-label" />
+    </StackPane> 
 
 </Pane>

@@ -95,5 +95,7 @@ public class TradingMenuController {
     @FXML
     private void handleEndTradingButton() {
         GameUIState.popupVisible.set(false);
+        GameUIState.tradingMenuVisible.set(false);
+
     }
 }

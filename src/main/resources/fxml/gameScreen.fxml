@@ -236,9 +236,28 @@
         style="-fx-background-color: rgba(0,0,0,0.5);">
 
         <!-- Actual popup box -->
-        <StackPane fx:id="popupBox"
+        <StackPane fx:id="tradingMenuPopup"
+            visible="false"
             alignment="CENTER"
-            maxWidth="1150"
+            maxWidth="800"
+            maxHeight="700"
+            style="
+                -fx-background-color: #1e1e2f;
+                -fx-background-radius: 12;
+                -fx-border-radius: 12;
+                -fx-border-color: white;
+                -fx-border-width: 2;
+                -fx-padding: 20;
+            ">
+
+            <!-- CONTENT ADDED DYNAMICALLY -->
+        </StackPane>
+
+        <!-- Select Resource Popup -->
+        <StackPane fx:id="selectResourcePopup"
+            visible="false"
+            alignment="CENTER"
+            maxWidth="800"
             maxHeight="700"
             style="
                 -fx-background-color: #1e1e2f;

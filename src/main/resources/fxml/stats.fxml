@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.Double?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.shape.Polygon?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.Region?>
+
+
+<StackPane fx:id="rootPane"
+           prefHeight="864.0"
+           prefWidth="1536.0"
+           xmlns="http://javafx.com/javafx/25"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.example.view.StatsScreenController"
+           alignment="CENTER">
+
+    <Canvas fx:id="hexCanvas" width="1536.0" height="864.0"/>
+    
+    <VBox fx:id="menuBox"
+          styleClass="menu-box"
+          alignment="TOP_CENTER"
+          spacing="22"
+          prefWidth="900"
+          prefHeight="520"
+          maxWidth="1100"
+          maxHeight="650">
+
+        <Label text="Game Results" styleClass="prompt-text-large"/>
+
+        <VBox fx:id="mainBox" spacing="18" alignment="TOP_CENTER">
+
+            <!-- ===================== Player 1 ===================== -->
+            <HBox fx:id="p1Row" spacing="18" alignment="CENTER_LEFT" styleClass="player-row">
+
+                <!-- Name column (fixed width) -->
+                <Label fx:id="p1NameLabel"
+                       text="Player 1"
+                       style="-fx-text-fill: #e43b29;"
+                       styleClass="name-label"
+                       minWidth="200" prefWidth="200" maxWidth="200"
+                       textOverrun="CLIP"/>
+
+                <!-- Badges column (fixed width) -->
+                <HBox spacing="10" alignment="CENTER_LEFT"
+                      minWidth="210" prefWidth="210" maxWidth="210">
+                    <Label fx:id="p1WinnerLabel" text="WINNER" styleClass="badge winner"/>
+                    <Label fx:id="p1LongestRoadLabel" text="LR" styleClass="badge"/>
+                    <Label fx:id="p1LargestArmyLabel" text="LA" styleClass="badge"/>
+                </HBox>
+
+                <!-- VP -->
+                <Label text="VP:" styleClass="stat-label"/>
+                <Label fx:id="p1VpLabel"
+                       text="0"
+                       style="-fx-text-fill: #e43b29;"
+                       styleClass="stat-value"
+                       minWidth="60" prefWidth="60" maxWidth="60"
+                       alignment="CENTER_RIGHT"/>
+
+                <!-- Spacer pushes right-side stats to the right -->
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <!-- Resources -->
+                <Label text="Resources:" styleClass="stat-label"/>
+                <Label fx:id="p1ResLabel"
+                       text="0"
+                       styleClass="stat-value-small"
+                       minWidth="45" prefWidth="45" maxWidth="45"
+                       alignment="CENTER_RIGHT"/>
+
+                <!-- Dev Cards -->
+                <Label text="Dev Cards:" styleClass="stat-label"/>
+                <Label fx:id="p1DevLabel"
+                       text="0"
+                       styleClass="stat-value-small"
+                       minWidth="45" prefWidth="45" maxWidth="45"
+                       alignment="CENTER_RIGHT"/>
+            </HBox>
+
+            <!-- ===================== Player 2 ===================== -->
+            <HBox fx:id="p2Row" spacing="18" alignment="CENTER_LEFT" styleClass="player-row">
+
+                <Label fx:id="p2NameLabel"
+                       text="Player 2"
+                       style="-fx-text-fill: #4fa6eb;"
+                       styleClass="name-label"
+                       minWidth="200" prefWidth="200" maxWidth="200"
+                       textOverrun="CLIP"/>
+
+                <HBox spacing="10" alignment="CENTER_LEFT"
+                      minWidth="210" prefWidth="210" maxWidth="210">
+                    <Label fx:id="p2WinnerLabel" text="WINNER" styleClass="badge winner"/>
+                    <Label fx:id="p2LongestRoadLabel" text="LR" styleClass="badge"/>
+                    <Label fx:id="p2LargestArmyLabel" text="LA" styleClass="badge"/>
+                </HBox>
+
+                <Label text="VP:" styleClass="stat-label"/>
+                <Label fx:id="p2VpLabel"
+                       text="0"
+                       style="-fx-text-fill: #4fa6eb;"
+                       styleClass="stat-value"
+                       minWidth="60" prefWidth="60" maxWidth="60"
+                       alignment="CENTER_RIGHT"/>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Label text="Resources:" styleClass="stat-label"/>
+                <Label fx:id="p2ResLabel"
+                       text="0"
+                       styleClass="stat-value-small"
+                       minWidth="45" prefWidth="45" maxWidth="45"
+                       alignment="CENTER_RIGHT"/>
+
+                <Label text="Dev Cards:" styleClass="stat-label"/>
+                <Label fx:id="p2DevLabel"
+                       text="0"
+                       styleClass="stat-value-small"
+                       minWidth="45" prefWidth="45" maxWidth="45"
+                       alignment="CENTER_RIGHT"/>
+            </HBox>
+
+            <!-- ===================== Player 3 ===================== -->
+            <HBox fx:id="p3Row" spacing="18" alignment="CENTER_LEFT" styleClass="player-row">
+
+                <Label fx:id="p3NameLabel"
+                       text="Player 3"
+                       style="-fx-text-fill: #f0ad00;"
+                       styleClass="name-label"
+                       minWidth="200" prefWidth="200" maxWidth="200"
+                       textOverrun="CLIP"/>
+
+                <HBox spacing="10" alignment="CENTER_LEFT"
+                      minWidth="210" prefWidth="210" maxWidth="210">
+                    <Label fx:id="p3WinnerLabel" text="WINNER" styleClass="badge winner"/>
+                    <Label fx:id="p3LongestRoadLabel" text="LR" styleClass="badge"/>
+                    <Label fx:id="p3LargestArmyLabel" text="LA" styleClass="badge"/>
+                </HBox>
+
+                <Label text="VP:" styleClass="stat-label"/>
+                <Label fx:id="p3VpLabel"
+                       text="0"
+                       style="-fx-text-fill: #f0ad00;"
+                       styleClass="stat-value"
+                       minWidth="60" prefWidth="60" maxWidth="60"
+                       alignment="CENTER_RIGHT"/>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Label text="Resources:" styleClass="stat-label"/>
+                <Label fx:id="p3ResLabel"
+                       text="0"
+                       styleClass="stat-value-small"
+                       minWidth="45" prefWidth="45" maxWidth="45"
+                       alignment="CENTER_RIGHT"/>
+
+                <Label text="Dev Cards:" styleClass="stat-label"/>
+                <Label fx:id="p3DevLabel"
+                       text="0"
+                       styleClass="stat-value-small"
+                       minWidth="45" prefWidth="45" maxWidth="45"
+                       alignment="CENTER_RIGHT"/>
+            </HBox>
+
+            <!-- ===================== Player 4 ===================== -->
+            <HBox fx:id="p4Row" spacing="18" alignment="CENTER_LEFT" styleClass="player-row">
+
+                <Label fx:id="p4NameLabel"
+                       text="Player 4"
+                       style="-fx-text-fill: #517d19;"
+                       styleClass="name-label"
+                       minWidth="200" prefWidth="200" maxWidth="200"
+                       textOverrun="CLIP"/>
+
+                <HBox spacing="10" alignment="CENTER_LEFT"
+                      minWidth="210" prefWidth="210" maxWidth="210">
+                    <Label fx:id="p4WinnerLabel" text="WINNER" styleClass="badge winner"/>
+                    <Label fx:id="p4LongestRoadLabel" text="LR" styleClass="badge"/>
+                    <Label fx:id="p4LargestArmyLabel" text="LA" styleClass="badge"/>
+                </HBox>
+
+                <Label text="VP:" styleClass="stat-label"/>
+                <Label fx:id="p4VpLabel"
+                       text="0"
+                       style="-fx-text-fill: #517d19;"
+                       styleClass="stat-value"
+                       minWidth="60" prefWidth="60" maxWidth="60"
+                       alignment="CENTER_RIGHT"/>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Label text="Resources:" styleClass="stat-label"/>
+                <Label fx:id="p4ResLabel"
+                       text="0"
+                       styleClass="stat-value-small"
+                       minWidth="45" prefWidth="45" maxWidth="45"
+                       alignment="CENTER_RIGHT"/>
+
+                <Label text="Dev Cards:" styleClass="stat-label"/>
+                <Label fx:id="p4DevLabel"
+                       text="0"
+                       styleClass="stat-value-small"
+                       minWidth="45" prefWidth="45" maxWidth="45"
+                       alignment="CENTER_RIGHT"/>
+            </HBox>
+
+        </VBox>
+    </VBox>
+</StackPane>
