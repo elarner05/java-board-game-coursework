@@ -15,6 +15,7 @@ import com.example.viewmodel.viewstates.RoadViewState;
 import com.example.viewmodel.viewstates.TileViewState;
 import com.example.viewmodel.viewstates.VertexViewState;
 
+import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
@@ -75,7 +76,7 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
     @FXML
     private StackPane tradingMenuPopup, selectResourcePopup;
     @FXML
-    private Polygon numberArrow;
+    private Polygon numberArrow, cleanestEnviro, longestRoad;
 
     // Static holder for names before screen loads
     private Shape[] vertexNodes = new Shape[54]; // can hold Circle or Rectangle
@@ -84,6 +85,8 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
     private int[] vertexToPort = new int[54]; // -1 = not a port
     private Shape[] portDecorations = new Shape[54];
     private Shape[] roadNodes = new Shape[72];
+    private int currentLongestRoadOwner = -1;
+    private int currentCleanestEnvironmentOwner = -1;
 
     @Override
     public void setViewModel(GameViewModel viewModel) {
@@ -123,6 +126,7 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
         // Initial load
         for (int i = 0; i < players.size(); i++) {
             addPlayerRow(players.get(i), i);
+
         }
 
         setPlayerIndents();
@@ -147,6 +151,57 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
             setPlayerIndents();
         });
 
+        cleanestEnviro.fillProperty().bind(
+                Bindings.createObjectBinding(() -> {
+                    for (PlayerViewState p : players) {
+                        if (p.cleanestEnvironmentProperty().get()) {
+                            return p.colorProperty().get();
+                        }
+                    }
+                    return Color.LIGHTGRAY;
+                }, players));
+
+        cleanestEnviro.fillProperty().bind(
+                Bindings.createObjectBinding(() -> {
+                    if (viewModel.currentPlayerProperty().get() != null
+                            && viewModel.currentPlayerProperty().get().cleanestEnvironmentProperty().get()) {
+                        return viewModel.currentPlayerProperty().get().colorProperty().get();
+                    }
+                    return Color.LIGHTGRAY;
+                }, viewModel.currentPlayerProperty()));
+
+        List<Observable> dependencies = new ArrayList<>();
+        dependencies.add(viewModel.playersProperty());
+        dependencies.add(viewModel.currentPlayerProperty());
+
+        for (PlayerViewState p : viewModel.playersProperty()) {
+            dependencies.add(p.longestRoadProperty());
+            dependencies.add(p.colorProperty());
+        }
+
+        PlayerViewState current = viewModel.currentPlayerProperty().get();
+        if (current != null) {
+            dependencies.add(current.longestRoadProperty());
+            dependencies.add(current.colorProperty());
+        }
+
+        longestRoad.fillProperty().bind(
+                Bindings.createObjectBinding(() -> {
+
+                    for (PlayerViewState p : viewModel.playersProperty()) {
+                        if (p.longestRoadProperty().get()) {
+                            return p.colorProperty().get();
+                        }
+                    }
+
+                    PlayerViewState cp = viewModel.currentPlayerProperty().get();
+                    if (cp != null && cp.longestRoadProperty().get()) {
+                        return cp.colorProperty().get();
+                    }
+
+                    return Color.LIGHTGRAY;
+
+                }, dependencies.toArray(new Observable[0])));
         try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/fxml/currentPlayer.fxml"));

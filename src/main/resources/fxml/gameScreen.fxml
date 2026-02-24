@@ -204,7 +204,7 @@
                         text="Longest Road:" translateX="30" />
                     <Label fx:id="longestRoadCurrent" styleClass="tracker-title"
                         StackPane.alignment="CENTER_RIGHT"
-                        text="5 Required" translateX="-30" />
+                        text="5 Min Required" translateX="-30" />
                 </StackPane>
 
                 <StackPane alignment="CENTER" styleClass="progress-track-pane">
@@ -223,10 +223,10 @@
                     </Polygon>
                     <Label fx:id="cleanestEnviroTitle" styleClass="tracker-title"
                         StackPane.alignment="CENTER_LEFT"
-                        text="Cleanest Enviroment:" translateX="30" />
+                        text="Cleanest Environment:" translateX="30" />
                     <Label fx:id="cleanestEnviroCurrent" styleClass="tracker-title"
                         StackPane.alignment="CENTER_RIGHT"
-                        text="3 Required" translateX="-30" />
+                        text="3 Min Required" translateX="-30" />
                 </StackPane>
 
             </HBox>
