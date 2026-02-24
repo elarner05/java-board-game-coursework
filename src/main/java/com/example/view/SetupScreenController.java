@@ -2,6 +2,7 @@ package com.example.view;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale.LanguageRange;
 
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
@@ -21,6 +22,7 @@ import javafx.scene.shape.Polygon;
 import javafx.util.Duration;
 import javafx.scene.control.TextField;
 
+import com.example.model.config.LangManager;
 import com.example.view.components.Hex;
 import com.example.viewmodel.SetupViewModel;
 
@@ -47,6 +49,8 @@ public class SetupScreenController implements ViewModelAware<SetupViewModel> {
 
     @FXML
     private TextField player1Field, player2Field, player3Field, player4Field;
+    @FXML
+    private Label player1Label, player2Label, player3Label, player4Label, setupTitleLabel, playerNumberLabel;
 
     @Override
     public void setViewModel(SetupViewModel viewModel) {
@@ -72,6 +76,16 @@ public class SetupScreenController implements ViewModelAware<SetupViewModel> {
 
         setupHoverAnimation(threeBox, threeHex, threeOption);
         setupHoverAnimation(fourBox, fourHex, fourOption);
+
+        threeOption.setText(LangManager.get("threeOption"));
+        fourOption.setText(LangManager.get("fourOption"));
+        playText.setText(LangManager.get("playText"));
+        setupTitleLabel.setText(LangManager.get("setupTitleLabel"));
+        playerNumberLabel.setText(LangManager.get("playerNumberLabel"));
+        player1Label.setText(LangManager.get("player1Label"));
+        player2Label.setText(LangManager.get("player2Label"));
+        player3Label.setText(LangManager.get("player3Label"));
+        player4Label.setText(LangManager.get("player4Label"));
     }
 
     @FXML

@@ -33,14 +33,14 @@
           maxHeight="400">
         
         <!-- Title -->
-        <Label text="Game Setup" styleClass="prompt-text-large"/>
+        <Label fx:id="setupTitleLabel" styleClass="prompt-text-large"/>
 
         <!-- Number options -->
         <HBox styleClass="menu" alignment="CENTER" spacing="60">
 
             <!-- Title aligned with numbers -->
             <VBox alignment="CENTER" spacing="10">
-                <Label text="Number of Players:" styleClass="prompt-text-small" style="-fx-font-size: 43;"/>
+                <Label fx:id="playerNumberLabel" styleClass="prompt-text-small" style="-fx-font-size: 43;"/>
                 <!--This label not resizable? doesn't look nice at size 50 in Noto Sans-->
             </VBox>
 
@@ -56,7 +56,7 @@
                             <Double fx:value="-34.64"/><Double fx:value="-20"/>
                         </points>
                     </Polygon>
-                    <Label fx:id="threeOption" text="3" styleClass="number-option"/>
+                    <Label fx:id="threeOption" styleClass="number-option"/>
                 </StackPane>
             </VBox>
 
@@ -72,7 +72,7 @@
                             <Double fx:value="-34.64"/><Double fx:value="-20"/>
                         </points>
                     </Polygon>
-                    <Label fx:id="fourOption" text="4" styleClass="number-option"/>
+                    <Label fx:id="fourOption" styleClass="number-option"/>
                 </StackPane>
             </VBox>
 
@@ -82,22 +82,22 @@
         <VBox fx:id="playerNamesBox" spacing="10" alignment="TOP_CENTER">
 
             <HBox spacing="10" alignment="CENTER">
-                <Label fx:id="player1Label" text="Player 1:" style="-fx-text-fill: #e43b29;" styleClass="name-label"/>
+                <Label fx:id="player1Label" style="-fx-text-fill: #e43b29;" styleClass="name-label"/>
                 <TextField fx:id="player1Field" prefWidth="400" styleClass="name-enter"/>
             </HBox>
 
             <HBox spacing="10" alignment="CENTER">
-                <Label fx:id="player2Label" text="Player 2:" style="-fx-text-fill: #4fa6eb;" styleClass="name-label"/>
+                <Label fx:id="player2Label" style="-fx-text-fill: #4fa6eb;" styleClass="name-label"/>
                 <TextField fx:id="player2Field" prefWidth="400" styleClass="name-enter"/>
             </HBox>
 
             <HBox spacing="10" alignment="CENTER">
-                <Label fx:id="player3Label" text="Player 3:" style="-fx-text-fill: #f0ad00;" styleClass="name-label"/>
+                <Label fx:id="player3Label" style="-fx-text-fill: #f0ad00;" styleClass="name-label"/>
                 <TextField fx:id="player3Field" prefWidth="400" styleClass="name-enter"/>
             </HBox>
 
             <HBox fx:id="pFourBox" spacing="10" alignment="CENTER">
-                <Label fx:id="player4Label" text="Player 4:" style="-fx-text-fill: #517d19;" styleClass="name-label"/>
+                <Label fx:id="player4Label" style="-fx-text-fill: #517d19;" styleClass="name-label"/>
                 <TextField fx:id="player4Field" prefWidth="400" styleClass="name-enter"/>
             </HBox>
 

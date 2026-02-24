@@ -35,7 +35,7 @@
             maxHeight="400">
             
             <!-- Title -->
-            <Label text="Settings" styleClass="prompt-text-large"/>
+            <Label fx:id="settingsLabel" styleClass="prompt-text-large"/>
 
             <!-- ComboBoxes + Slider Section (with labels, left-edge centered) -->
             <VBox fx:id="comboBoxSection"
@@ -45,38 +45,10 @@
                 <!-- Row 1: Language -->
                 <HBox spacing="10" alignment="CENTER_LEFT">
                     <Region HBox.hgrow="ALWAYS"/>
-                    <Label fx:id="languageLabel" text="Language:" styleClass="menu-label"
+                    <Label fx:id="languageLabel" styleClass="menu-label"
                         minWidth="150" alignment="CENTER_RIGHT"/>
                     <ComboBox fx:id="languageCombo" prefWidth="400" maxWidth="400"/>
                 </HBox>
-
-                <!-- Row 2: Text Size -->
-                <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Region HBox.hgrow="ALWAYS"/>
-                    <Label fx:id="textSizeLabel" text="Text Size:" styleClass="menu-label"
-                        minWidth="150" alignment="CENTER_RIGHT"/>
-                    <ComboBox fx:id="textSizeCombo" prefWidth="400" maxWidth="400"/>
-                </HBox>
-
-                <!-- Row 3: Resolution -->
-                <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Region HBox.hgrow="ALWAYS"/>
-                    <Label fx:id="resolutionLabel" text="Resolution:" styleClass="menu-label"
-                        minWidth="150" alignment="CENTER_RIGHT"/>
-                    <ComboBox fx:id="resolutionCombo" prefWidth="400" maxWidth="400"/>
-                </HBox>
-
-                <!-- Row 4: Volume Slider -->
-                <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Region HBox.hgrow="ALWAYS"/>
-                    <Label fx:id="volumeLabel" text="Volume:" styleClass="menu-label"
-                        minWidth="150" alignment="CENTER_RIGHT"/>
-                    <Slider fx:id="volumeSlider" prefWidth="320" maxWidth="320" min="0" max="100" value="50"/>
-                    <Label fx:id="volumeValueLabel" text="50" styleClass="menu-label"
-                        minWidth="70" maxWidth="70" alignment="CENTER_RIGHT"/>
-                </HBox>
-
-
             </VBox>
 
 
@@ -106,7 +78,6 @@
                     </Polygon>
 
                     <Label fx:id="playText"
-                        text="Play Game"
                         styleClass="menu-label"/>
                 </HBox>
             </StackPane>
