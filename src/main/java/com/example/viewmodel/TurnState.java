@@ -14,7 +14,8 @@ public enum TurnState {
     HIGHWAY_MADNESS("hint.turn.highway_madness"),
     TRADE_FRENZY("hint.turn.trade_frenzy"),
     MONOPOLY("hint.turn.monopoly"),
-    STEAL_RESOURCE("hint.turn.steal_resource");
+    STEAL_RESOURCE("hint.turn.steal_resource"),
+    REPAIR_TILE("hint.turn.repair_tile");
 
     private final String hintKey;
 
