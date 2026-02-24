@@ -285,6 +285,7 @@ public class GameModel {
                 int resourceVertex = builtVertices.get(builtVertices.size() - 1);
                 Tile[] adjTiles = tiles.getAdjTiles(resourceVertex);
                 for (Tile t : adjTiles){
+                    if (t == null) continue;
                     ResourceConfig resource = t.getResourceFromTileID();
                     Player p = getPlayer(id);
                     p.changeResourceCount(resource, 1);
