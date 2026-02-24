@@ -15,6 +15,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 
@@ -52,12 +55,27 @@ public class CurrentPlayerController {
     @FXML
     private Button endTurnButton;
 
+    @FXML
+    private HBox diceBox;
+    private ImageView dice1 = new ImageView();
+    private ImageView dice2 = new ImageView();
+
     // @FXML
     // private Label die1Value;
     // @FXML
     // private Label die2Value;
 
     private GameViewModel viewModel;
+
+    public void initialize() {
+        dice1.setFitWidth(30);
+        dice1.setFitHeight(30);
+        dice2.setFitWidth(30);
+        dice2.setFitHeight(30);
+        diceBox.getChildren().addAll(dice1, dice2);
+
+        setDice(1, 1);
+    }
 
     public void bindCurrentPlayer(GameViewModel viewModel) {
 
@@ -119,6 +137,34 @@ public class CurrentPlayerController {
                 viewModel.turnStateProperty().isEqualTo(TurnState.TRADE));
         repairTileButton.visibleProperty().bind(
                 viewModel.turnStateProperty().isEqualTo(TurnState.BUILD));
+
+        viewModel.diceRollProperty().get().dice1Property().addListener((obs, oldRoll, newRoll) -> {
+            if (newRoll != null) {
+                setDice(newRoll.intValue(), viewModel.diceRollProperty().get().dice2Property().get());
+            }
+        });
+        viewModel.diceRollProperty().get().dice2Property().addListener((obs, oldRoll, newRoll) -> {
+            if (newRoll != null) {
+                setDice(viewModel.diceRollProperty().get().dice1Property().get(), newRoll.intValue());
+            }
+        });
+
+
+        setDice(viewModel.diceRollProperty().get().dice1Property().get(),
+                viewModel.diceRollProperty().get().dice2Property().get());
+
+    }
+
+    private void setDice(int value1, int value2) {
+        System.out.println("Setting dice to: " + value1 + ", " + value2);
+        dice1.setImage(loadDiceImage(value1, 'R'));
+        dice2.setImage(loadDiceImage(value2, 'Y'));
+    }
+
+    private Image loadDiceImage(int value, char color) {
+        return new Image(
+                getClass().getResourceAsStream(
+                        "/images/" + color + "die" + value + ".png"));
     }
 
     private void populateDevCards() {
