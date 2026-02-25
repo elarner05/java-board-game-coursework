@@ -91,7 +91,8 @@
                 </Polygon>
                 <VBox alignment="CENTER" spacing="2">
                     <Label text="Dice" styleClass="tracker-title"  translateY="-10"/>
-                    <Label fx:id="diceValue" styleClass="tracker-content"/>
+                    <HBox fx:id="diceBox" alignment="CENTER" spacing="5">
+                    </HBox>
                 </VBox>
             </StackPane>
         </HBox>
