@@ -2,6 +2,7 @@ package com.example.view;
 
 import java.io.IOException;
 
+import com.example.model.config.LangManager;
 import com.example.viewmodel.GameViewModel;
 import com.example.viewmodel.TurnState;
 import com.example.viewmodel.viewstates.GameUIState;
@@ -54,6 +55,14 @@ public class CurrentPlayerController {
     private Button tradeButton;
     @FXML
     private Button endTurnButton;
+    @FXML
+    private Label currentPlayerScoreLabel;
+    @FXML  
+    private Label diceLabel;
+    @FXML
+    private Label resourcesLabel;
+    @FXML
+    private Label currentPlayerDevCardsLabel;
 
     @FXML
     private HBox diceBox;
@@ -68,6 +77,19 @@ public class CurrentPlayerController {
     private GameViewModel viewModel;
 
     public void initialize() {
+        currentPlayerScoreLabel.setText(LangManager.get("currentPlayerScoreLabel"));
+        diceLabel.setText(LangManager.get("diceLabel"));
+        resourcesLabel.setText(LangManager.get("resourcesLabel"));
+        currentPlayerDevCardsLabel.setText(LangManager.get("currentPlayerDevCardsLabel"));
+        endTurnButton.setText(LangManager.get("endTurnButton"));
+        tradeButton.setText(LangManager.get("tradeButton"));
+        buildButton.setText(LangManager.get("buildButton"));
+        rollDiceButton.setText(LangManager.get("rollDiceButton"));
+        repairTileButton.setText(LangManager.get("repairTileButton"));
+        buildDevCardButton.setText(LangManager.get("buildDevCardButton"));
+        buildCityButton.setText(LangManager.get("buildCityButton"));
+        buildRoadButton.setText(LangManager.get("buildRoadButton"));
+        buildSettlementButton.setText(LangManager.get("buildSettlementButton"));
         dice1.setFitWidth(30);
         dice1.setFitHeight(30);
         dice2.setFitWidth(30);

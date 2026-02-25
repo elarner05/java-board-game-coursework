@@ -31,7 +31,7 @@ public class TitleScreenController implements ViewModelAware<TitleViewModel> {
     @FXML
     private Polygon playHex, settingsHex, exitHex;
     @FXML
-    private Label playText, settingsText, exitText;
+    private Label playText, settingsText, exitText, titleTLabel, titleAccentLabel, titleRestLabel;
     @FXML
     private HBox playHBox, settingsHBox, exitHBox;
     @FXML
@@ -71,6 +71,9 @@ public class TitleScreenController implements ViewModelAware<TitleViewModel> {
         playText.setText(LangManager.get("playText"));
         settingsText.setText(LangManager.get("settingsText"));
         exitText.setText(LangManager.get("exitText"));
+        titleTLabel.setText(LangManager.get("titleTLabel"));
+        titleAccentLabel.setText(LangManager.get("titleAccentLabel"));
+        titleRestLabel.setText(LangManager.get("titleRestLabel"));
     }
 
     // Added to the Exit 'Button'

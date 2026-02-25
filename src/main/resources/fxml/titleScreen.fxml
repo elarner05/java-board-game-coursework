@@ -23,13 +23,13 @@
         <HBox fx:id="titleMainText" spacing="0" alignment="BOTTOM_LEFT">
             <children>
                 <!-- T -->
-                <Label text="T" styleClass="title-t"/>
+                <Label fx:id="titleTLabel" styleClass="title-t"/>
                 
                 <!-- Indstrializers of Text -->
-                <Label text="Industrialists of" styleClass="title-accent"/>
+                <Label fx:id="titleAccentLabel" styleClass="title-accent"/>
                 
                 <!-- empra -->
-                <Label text="empra" styleClass="title-rest"/>
+                <Label fx:id="titleRestLabel" styleClass="title-rest"/>
             </children>
         </HBox>
 
