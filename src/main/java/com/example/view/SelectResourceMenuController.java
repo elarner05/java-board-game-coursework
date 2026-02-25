@@ -4,6 +4,7 @@ import com.example.viewmodel.GameViewModel;
 import com.example.viewmodel.TurnState;
 import com.example.viewmodel.viewstates.PlayerViewState;
 import com.example.viewmodel.viewstates.ResourceViewState;
+import com.example.model.config.LangManager;
 import com.example.model.config.ResourceConfig;
 import com.example.viewmodel.viewstates.BankViewState;
 import com.example.viewmodel.viewstates.GameUIState;
@@ -18,6 +19,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 
 public class SelectResourceMenuController {
 
@@ -25,9 +27,17 @@ public class SelectResourceMenuController {
     private HBox resourceButtonsBox;
     @FXML
     private Button selectResourceButton;
+    @FXML
+    private Label tradingMenuLabel;
 
     private GameViewModel viewModel;
     private ToggleGroup resourceToggleGroup = new ToggleGroup();
+
+    @FXML
+    public void initialize() {
+        tradingMenuLabel.setText(LangManager.get("tradingMenuLabel"));
+        selectResourceButton.setText(LangManager.get("selectResourceButton"));
+    }
 
     public void bind(GameViewModel viewModel) {
         // Clear existing buttons

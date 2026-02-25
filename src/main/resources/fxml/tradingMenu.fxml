@@ -26,7 +26,7 @@
     style="-fx-padding: 20;">
 
     <!-- Title -->
-    <Label text="Trading Menu"
+    <Label fx:id="tradingMenuLabel"
         style="-fx-font-size: 24px;
                -fx-font-weight: bold;
                -fx-text-fill: white;" />
@@ -36,9 +36,9 @@
           alignment="CENTER"
           prefWidth="400">
 
-        <Button text="Players" onAction="#handlePlayersButton" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
-        <Button text="Ports"   onAction="#handlePortsButton" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
-        <Button text="Bank"    onAction="#handleBankButton" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+        <Button fx:id="playerTradeButton" onAction="#handlePlayersButton" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+        <Button fx:id="portTradeButton"   onAction="#handlePortsButton" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+        <Button fx:id="bankTradeButton"    onAction="#handleBankButton" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
 
     </HBox>
 
@@ -46,6 +46,6 @@
         <!-- Dynamic content will be loaded here -->
     </StackPane>
 
-    <Button text="End Trading" onAction="#handleEndTradingButton"/>
+    <Button fx:id="endTradingButton" onAction="#handleEndTradingButton"/>
 
 </VBox>

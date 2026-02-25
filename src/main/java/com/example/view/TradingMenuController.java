@@ -1,16 +1,30 @@
 package com.example.view;
 
+import com.example.model.config.LangManager;
 import com.example.viewmodel.GameViewModel;
 import com.example.viewmodel.viewstates.GameUIState;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.fxml.FXMLLoader;
 
 public class TradingMenuController {
     @FXML
     private StackPane contentPane;
+
+    @FXML
+    private Label tradingMenuLabel;
+    @FXML
+    private Button playerTradeButton;
+    @FXML
+    private Button portTradeButton;
+    @FXML
+    private Button bankTradeButton;
+    @FXML
+    private Button endTradingButton;
 
     private Node currentContent;
     private Node tradePlayerContent;
@@ -50,6 +64,12 @@ public class TradingMenuController {
 
         // Set the initial content to the player trading menu
         setContent(tradePlayerContent);
+
+        tradingMenuLabel.setText(LangManager.get("tradingMenuLabel"));
+        playerTradeButton.setText(LangManager.get("playerTradeButton"));
+        portTradeButton.setText(LangManager.get("portTradeButton"));
+        bankTradeButton.setText(LangManager.get("bankTradeButton"));
+        endTradingButton.setText(LangManager.get("endTradingButton"));
     }
 
     public void bind(GameViewModel viewModel) {
