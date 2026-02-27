@@ -152,6 +152,27 @@ public class Tiles {
         return tiles;
     }
 
+    public Tile[] getAdjTiles(int vertexIndex){
+        Tile[] adjTiles = new Tile[3];
+        for (int i = 0; i < AdjacencyMaps.TileVertices.length; i++){
+            for (int j = 0; j < AdjacencyMaps.TileVertices[i].length; j++){
+                if (AdjacencyMaps.TileVertices[i][j] == vertexIndex){
+                    boolean alreadyAdded = false;
+                    for (int k = 0; k < 3; k++){
+                        if (adjTiles[k] != null && adjTiles[k].equals(tiles[i])){
+                            alreadyAdded = true;
+                        }
+                        if (adjTiles[k] == null && !alreadyAdded){
+                            adjTiles[k] = tiles[i];
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return adjTiles;
+    }
+
     //need to make sure its not destroying the same tile every time
     public boolean destroyTile(String tileID){
         ArrayList<Tile> canDestroy = new ArrayList<>();
@@ -189,8 +210,9 @@ public class Tiles {
         for (int i = 0; i < allTiles.length; i++){
             if (allTiles[i].getNumber() == diceroll){
                 //tile has the desired value
-                if (!allTiles[i].getIsBlocked())
+                if (!allTiles[i].getIsBlocked() && !allTiles[i].getIsDestroyed()){
                     tilesWithDiceroll.add(allTiles[i]);
+                }
             }
         }
 
@@ -218,6 +240,12 @@ public class Tiles {
             }
         }
         return -1; // No blocked tile found
+    }
+
+    public void repareTiles() {
+        for (Tile tile : tiles) {
+            tile.setIsDestroyed(false);
+        }
     }
 
     

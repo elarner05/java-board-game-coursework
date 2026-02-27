@@ -26,7 +26,7 @@
     style="-fx-padding: 20;">
 
     <!-- Title -->
-    <Label text="Trading Menu"
+    <Label fx:id="tradingMenuLabel"
         style="-fx-font-size: 24px;
                -fx-font-weight: bold;
                -fx-text-fill: white;" />
@@ -39,6 +39,6 @@
          </HBox>
     </StackPane>
 
-    <Button fx:id="selectResourceButton" text="Select Resource" onAction="#handleSelectResourcesButton"/>
+    <Button fx:id="selectResourceButton" onAction="#handleSelectResourcesButton"/>
 
 </VBox>

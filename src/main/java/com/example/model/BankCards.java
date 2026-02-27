@@ -109,4 +109,8 @@ public class BankCards {
         System.out.println("Development cards: " + developmentCards);
     }
 
+    public boolean hasDevelopmentCards() {
+        return !developmentCards.isEmpty();
+    }
+
 }

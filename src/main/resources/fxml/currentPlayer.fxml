@@ -71,8 +71,8 @@
                     </points>
                 </Polygon>
                 <VBox alignment="CENTER" spacing="5">
-                    <Label text="Score" styleClass="tracker-title" translateY="-10"/>
-                    <Label text="0" fx:id="scoreValue" styleClass="tracker-content"/>
+                    <Label fx:id="currentPlayerScoreLabel" styleClass="tracker-title" translateY="-10"/>
+                    <Label fx:id="scoreValue" styleClass="tracker-content"/>
                 </VBox>
             </StackPane>
 
@@ -90,8 +90,9 @@
                     </points>
                 </Polygon>
                 <VBox alignment="CENTER" spacing="2">
-                    <Label text="Dice" styleClass="tracker-title"  translateY="-10"/>
-                    <Label fx:id="diceValue" styleClass="tracker-content"/>
+                    <Label fx:id="diceLabel" styleClass="tracker-title"  translateY="-10"/>
+                    <HBox fx:id="diceBox" alignment="CENTER" spacing="5">
+                    </HBox>
                 </VBox>
             </StackPane>
         </HBox>
@@ -107,63 +108,13 @@
                 <!-- Add icons later -->
                 <!-- Resources Column -->
                 <VBox spacing="3" prefWidth="310" fx:id="resourcesBox">
-                    <Label text="Resources" styleClass="resources-title"/>
+                    <Label fx:id="resourcesLabel" styleClass="resources-title"/>
 
                     <!-- Added Dynamic Resource Labels -->
                 </VBox>
 
                 <!-- Trackers & Dev Cards Column -->
                 <VBox spacing="5" prefWidth="175">
-
-                    <!-- Longest Road
-                    <StackPane prefHeight="80" alignment="CENTER">
-                        <Polygon styleClass="progress-track-cont">
-                            <points>
-                                <Double fx:value="15.0" />
-                                <Double fx:value="0.0" />
-                                <Double fx:value="170.0" />
-                                <Double fx:value="0.0" />
-                                <Double fx:value="155.0" />
-                                <Double fx:value="60.0" />
-                                <Double fx:value="0.0" />
-                                <Double fx:value="60.0" />
-                            </points>
-                        </Polygon>
-                        <VBox alignment="TOP_CENTER" spacing="3">
-                            <Label text="Longest Road" styleClass="tracker-title" />
-                            <HBox spacing="5" alignment="CENTER">
-                                <Circle fx:id="longRoadPip1" radius="10" styleClass="stat-pip"/>
-                                <Circle fx:id="longRoadPip2" radius="10" styleClass="stat-pip"/>
-                                <Circle fx:id="longRoadPip3" radius="10" styleClass="stat-pip"/>
-                                <Circle fx:id="longRoadPip4" radius="10" styleClass="stat-pip"/>
-                                <Circle fx:id="longRoadPip5" radius="10" styleClass="stat-pip"/>
-                            </HBox>
-                        </VBox>
-                    </StackPane> -->
-
-                    <!-- Cleanest Environment
-                    <StackPane prefHeight="80" alignment="CENTER">
-                        <Polygon styleClass="progress-track-cont">
-                            <points>
-                                <Double fx:value="15.0" />
-                                <Double fx:value="0.0" />
-                                <Double fx:value="170.0" />
-                                <Double fx:value="0.0" />
-                                <Double fx:value="155.0" />
-                                <Double fx:value="60.0" />
-                                <Double fx:value="0.0" />
-                                <Double fx:value="60.0" />
-                            </points>
-                        </Polygon>
-                        <VBox alignment="TOP_CENTER" spacing="3">
-                            <Label text="Cleanest Env" styleClass="tracker-title" />
-                            <HBox spacing="5" alignment="CENTER">
-                                <Circle fx:id="cleanEnvPip1" radius="10" styleClass="stat-pip"/>
-                                <Circle fx:id="cleanEnvPip2" radius="10" styleClass="stat-pip"/>
-                                <Circle fx:id="cleanEnvPip3" radius="10" styleClass="stat-pip"/>
-                            </HBox>
-                        </VBox>
-                    </StackPane> -->
 
                     <!-- Development Cards -->
                     <StackPane prefHeight="300" maxHeight="300" alignment="CENTER" translateX="5">
@@ -183,7 +134,7 @@
                             </points>
                         </Polygon>
                         <VBox fx:id="devCardBox" alignment="TOP_CENTER" spacing="5">
-                            <Label text="Dev Cards" styleClass="tracker-title" translateY="5"/>
+                            <Label fx:id="currentPlayerDevCardsLabel" styleClass="tracker-title" translateY="5"/>
                         </VBox>
                     </StackPane>
                 </VBox>
@@ -199,7 +150,6 @@
                             alignment="CENTER" VBox.vgrow="ALWAYS">
                             <Button fx:id="buildSettlementButton"
                                 onAction="#switchToBUILDSETTLEMENTPHASE"
-                                text="Build Settlement"
                                 wrapText="true"
                                 alignment="TOP_CENTER"
                                 prefWidth="210"
@@ -208,7 +158,6 @@
                             </Button>
                             <Button fx:id="buildCityButton"
                                 onAction="#switchToBUILDCITYPHASE"
-                                text="Build City"
                                 alignment="TOP_CENTER"
                                 wrapText="true"
                                 prefWidth="210"
@@ -218,19 +167,20 @@
                         </HBox>
                         <Button fx:id="buildRoadButton"
                                 onAction="#switchToBUILDROADPHASE"
-                                text="Build Road"
                                 wrapText="true"
                                 alignment="TOP_CENTER"
                                 prefWidth="250"
                                 styleClass="action-button"/>
                         <Button fx:id="buildDevCardButton"
                             onAction="#buildDevCard"
-                            text="Build Dev Card"
+                            prefWidth="250"
+                            styleClass="action-button"/>
+                        <Button fx:id="repairTileButton"
+                            onAction="#repairTile"
                             prefWidth="250"
                             styleClass="action-button"/>
                         <Button fx:id="tradeButton"
                             onAction="#showTradingMenu"
-                            text="Trade"
                             prefWidth="250"
                             styleClass="action-button"/>
                         <StackPane fx:id="bottomRightAction"
@@ -240,13 +190,11 @@
 
                             <Button fx:id="rollDiceButton"
                                     onAction="#rollDice"
-                                    text="Roll Dice"
                                     prefWidth="250"
                                     prefHeight="60"
                                     styleClass="action-button"/>
                             <Button fx:id="buildButton"
                                     onAction="#switchToBUILDINGPHASE"
-                                    text="Build"
                                     prefWidth="250"
                                     prefHeight="60"
                                     styleClass="action-button"/>

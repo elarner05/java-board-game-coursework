@@ -25,6 +25,8 @@ public class Player {
     private ArrayList<String> devCards;
     private HashMap<String, Integer> structuresRemaining;
 
+    private int tilesRestored;
+
     private int victoryPoints;
     private int hiddenVictoryPoints;
 
@@ -55,6 +57,7 @@ public class Player {
             this.structuresRemaining.put(structureTypes.get(i), startingCount);
         }
 
+        tilesRestored = 0;
         victoryPoints = 0;
         hiddenVictoryPoints = 0;
     }
@@ -329,6 +332,14 @@ public class Player {
         for (String key : this.structuresRemaining.keySet()) {
             this.structuresRemaining.put(key, 0);
         }
+    }
+
+    public int getTilesRestored() {
+        return this.tilesRestored;
+    }
+
+    public void increaseTilesRestored(){
+        this.tilesRestored++;
     }
 
     /**

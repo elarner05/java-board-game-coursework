@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class Roads {
 
-    public static int minimumLongestRoadLength = 3; // minimum length for longest road
+    public static int minimumLongestRoadLength = 5; // minimum length for longest road
     
     public static final int NUMBER_OF_ROADS = 72; // number of unique edges on the board
     public static final int UNOWNED_ROAD_ID = -1;

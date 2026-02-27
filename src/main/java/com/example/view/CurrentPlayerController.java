@@ -2,6 +2,7 @@ package com.example.view;
 
 import java.io.IOException;
 
+import com.example.model.config.LangManager;
 import com.example.viewmodel.GameViewModel;
 import com.example.viewmodel.TurnState;
 import com.example.viewmodel.viewstates.GameUIState;
@@ -15,6 +16,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 
@@ -42,6 +46,8 @@ public class CurrentPlayerController {
     @FXML
     private Button buildDevCardButton;
     @FXML
+    private Button repairTileButton;
+    @FXML
     private Button rollDiceButton;
     @FXML
     private Button buildButton;
@@ -49,6 +55,19 @@ public class CurrentPlayerController {
     private Button tradeButton;
     @FXML
     private Button endTurnButton;
+    @FXML
+    private Label currentPlayerScoreLabel;
+    @FXML  
+    private Label diceLabel;
+    @FXML
+    private Label resourcesLabel;
+    @FXML
+    private Label currentPlayerDevCardsLabel;
+
+    @FXML
+    private HBox diceBox;
+    private ImageView dice1 = new ImageView();
+    private ImageView dice2 = new ImageView();
 
     // @FXML
     // private Label die1Value;
@@ -56,6 +75,29 @@ public class CurrentPlayerController {
     // private Label die2Value;
 
     private GameViewModel viewModel;
+
+    public void initialize() {
+        currentPlayerScoreLabel.setText(LangManager.get("currentPlayerScoreLabel"));
+        diceLabel.setText(LangManager.get("diceLabel"));
+        resourcesLabel.setText(LangManager.get("resourcesLabel"));
+        currentPlayerDevCardsLabel.setText(LangManager.get("currentPlayerDevCardsLabel"));
+        endTurnButton.setText(LangManager.get("endTurnButton"));
+        tradeButton.setText(LangManager.get("tradeButton"));
+        buildButton.setText(LangManager.get("buildButton"));
+        rollDiceButton.setText(LangManager.get("rollDiceButton"));
+        repairTileButton.setText(LangManager.get("repairTileButton"));
+        buildDevCardButton.setText(LangManager.get("buildDevCardButton"));
+        buildCityButton.setText(LangManager.get("buildCityButton"));
+        buildRoadButton.setText(LangManager.get("buildRoadButton"));
+        buildSettlementButton.setText(LangManager.get("buildSettlementButton"));
+        dice1.setFitWidth(30);
+        dice1.setFitHeight(30);
+        dice2.setFitWidth(30);
+        dice2.setFitHeight(30);
+        diceBox.getChildren().addAll(dice1, dice2);
+
+        setDice(1, 1);
+    }
 
     public void bindCurrentPlayer(GameViewModel viewModel) {
 
@@ -97,6 +139,8 @@ public class CurrentPlayerController {
                 Bindings.selectBoolean(currentPlayer, "canBuildRoad").not());
         buildDevCardButton.disableProperty().bind(
                 Bindings.selectBoolean(currentPlayer, "canBuildDevCard").not());
+        repairTileButton.disableProperty().bind(
+                Bindings.selectBoolean(currentPlayer, "canRepairTile").not());
         rollDiceButton.visibleProperty().bind(
                 viewModel.turnStateProperty().isEqualTo(TurnState.DICE_ROLL));
         buildRoadButton.visibleProperty().bind(
@@ -113,6 +157,36 @@ public class CurrentPlayerController {
                 viewModel.turnStateProperty().isEqualTo(TurnState.BUILD));
         tradeButton.visibleProperty().bind(
                 viewModel.turnStateProperty().isEqualTo(TurnState.TRADE));
+        repairTileButton.visibleProperty().bind(
+                viewModel.turnStateProperty().isEqualTo(TurnState.BUILD));
+
+        viewModel.diceRollProperty().get().dice1Property().addListener((obs, oldRoll, newRoll) -> {
+            if (newRoll != null) {
+                setDice(newRoll.intValue(), viewModel.diceRollProperty().get().dice2Property().get());
+            }
+        });
+        viewModel.diceRollProperty().get().dice2Property().addListener((obs, oldRoll, newRoll) -> {
+            if (newRoll != null) {
+                setDice(viewModel.diceRollProperty().get().dice1Property().get(), newRoll.intValue());
+            }
+        });
+
+
+        setDice(viewModel.diceRollProperty().get().dice1Property().get(),
+                viewModel.diceRollProperty().get().dice2Property().get());
+
+    }
+
+    private void setDice(int value1, int value2) {
+        System.out.println("Setting dice to: " + value1 + ", " + value2);
+        dice1.setImage(loadDiceImage(value1, 'R'));
+        dice2.setImage(loadDiceImage(value2, 'Y'));
+    }
+
+    private Image loadDiceImage(int value, char color) {
+        return new Image(
+                getClass().getResourceAsStream(
+                        "/images/" + color + "die" + value + ".png"));
     }
 
     private void populateDevCards() {
@@ -217,5 +291,10 @@ public class CurrentPlayerController {
     @FXML
     private void buildDevCard() {
         viewModel.buildDevCard();
+    }
+
+    @FXML
+    private void repairTile() {
+        viewModel.switchToRepairTileState();
     }
 }
