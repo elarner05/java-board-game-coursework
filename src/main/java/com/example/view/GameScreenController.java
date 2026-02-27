@@ -24,6 +24,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
+import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -82,7 +83,7 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
 
     // Static holder for names before screen loads
     private int[] vertexToPort = new int[54]; // -1 = not a port
-    private Shape[] portDecorations = new Shape[54];
+    private Node[] portDecorations;
     private Shape[] roadNodes = new Shape[72];
     private int currentLongestRoadOwner = -1;
     private int currentCleanestEnvironmentOwner = -1;
@@ -90,6 +91,10 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
     @Override
     public void setViewModel(GameViewModel viewModel) {
         this.viewModel = viewModel;
+
+        // Initialize portDecorations here
+        int numberOfPorts = viewModel.getPorts().length;
+        portDecorations = new Node[numberOfPorts];
 
         bindViewModel();
     }
@@ -231,7 +236,6 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
             updateClimateTrackerArrow(newNum.intValue());
         });
         updateClimateTrackerArrow(viewModel.climateTrackerProperty().get());
-
     }
 
     private void updateClimateTrackerArrow(int climateLevel) {
@@ -723,53 +727,67 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
         });
     }
 
-    private void setVertex(int vertexId, int playerOwner, String type) {
+    private void setVertex(int vertexId, int playerOwner, String type) 
+    {
         if (vertexId < 0 || vertexId >= vertexNodes.length || vertexNodes[vertexId] == null) {
             return;
         }
 
-        // Remove old node (circle or rectangle)
+        // Remove old vertex node
         vertexPane.getChildren().remove(vertexNodes[vertexId]);
 
-        // Determine color based on owner
+        // Determine fill color
         Color fillColor = viewModel.getPlayerColor(playerOwner);
 
-        // Create new node depending on type
         double layoutX = vertexNodes[vertexId].getLayoutX();
         double layoutY = vertexNodes[vertexId].getLayoutY();
+
         Shape newVertex;
-        if (type == "player_infrastructure.city") { // city = square
-            newVertex = createSquareVertex(fillColor, layoutX, layoutY);
-        } else if (type == "player_infrastructure.settlement") { // settlement = circle
-            newVertex = createCircleVertex(fillColor, layoutX, layoutY);
-        } else {
-            newVertex = createCircleVertex(Color.GREY, layoutX, layoutY); // unowned = grey circle
+        switch (type) {
+            case "player_infrastructure.city" -> newVertex = createSquareVertex(fillColor, layoutX, layoutY);
+            case "player_infrastructure.settlement" -> newVertex = createCircleVertex(fillColor, layoutX, layoutY);
+            default -> newVertex = createCircleVertex(Color.GREY, layoutX, layoutY);
         }
 
         vertexNodes[vertexId] = newVertex;
         vertexPane.getChildren().add(newVertex);
 
-        // Remove old decoration if present
-        if (portDecorations[vertexId] != null) {
-            vertexPane.getChildren().remove(portDecorations[vertexId]);
-            portDecorations[vertexId] = null;
-        }
+        // -------------------------
+        // HIGHLIGHT PORT VERTICES
+        // -------------------------
+        int portId = vertexToPort[vertexId];
+        if (portId == -1) return;
 
-        if (vertexToPort[vertexId] != -1) {
-            Circle portRing = new Circle(15);
-            portRing.setFill(Color.TRANSPARENT);
-            portRing.setStroke(Color.CRIMSON);
-            portRing.setStrokeWidth(3);
-            portRing.setLayoutX(layoutX);
-            portRing.setLayoutY(layoutY);
-            portRing.setMouseTransparent(true);
+        int[] portVertices = viewModel.getPorts()[portId];
 
-            portDecorations[vertexId] = portRing;
-            vertexPane.getChildren().add(portRing);
+        for (int v : portVertices) {
+            Shape vertex = vertexNodes[v];
+
+            // Skip if null
+            if (vertex == null) continue;
+
+            // Delay until layout is ready
+            Platform.runLater(() -> {
+                Bounds bounds = vertex.localToParent(vertex.getBoundsInLocal());
+                double centerX = bounds.getCenterX();
+                double centerY = bounds.getCenterY();
+
+                Circle highlight = new Circle(17);
+                highlight.setFill(Color.TRANSPARENT);
+                highlight.setStroke(Color.CRIMSON);
+                highlight.setStrokeWidth(3);
+                highlight.setMouseTransparent(true);
+
+                highlight.setLayoutX(centerX);
+                highlight.setLayoutY(centerY);
+
+                portsPane.getChildren().add(highlight);
+            });
         }
     }
 
-    private Shape createCircleVertex(Color fillColor, double layoutX, double layoutY) {
+    private Shape createCircleVertex(Color fillColor, double layoutX, double layoutY) 
+    {
         double radius = 12;
         Circle circle = new Circle(radius);
         circle.setFill(fillColor);
@@ -908,8 +926,8 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
     }
 
     private void createCatanBoard(Pane boardPane) {
-        double hexWidth = 120;
-        double hexHeight = 120;
+        double hexWidth = 115;
+        double hexHeight = 115;
         double gap = 34;
         double rightShift = 100;
         double totalHeight = 864;
@@ -924,7 +942,7 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
         int id = 0;
 
         // --- Background ---
-        Polygon background = createFlatTopHex(hexWidth * 7.60, totalHeight - 130);
+        Polygon background = createFlatTopHex(hexWidth * 8, totalHeight - 92);
 
         // I Will want to bring this back at some point, just having a bit of a layering
         // issue

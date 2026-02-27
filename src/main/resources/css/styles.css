@@ -57,10 +57,10 @@
 }
 
 .menu-item.selected .hexagon {
-    -fx-opacity: 1;               /* ✅ Stay visible */
+    -fx-opacity: 1;
     -fx-scale-x: 1.15;
     -fx-scale-y: 1.15;
-    -fx-effect: dropshadow(one-pass-box, rgb(0, 0, 0), 12, 1.0, 0, 0); /* subtle glow */
+    -fx-effect: dropshadow(one-pass-box, rgb(0, 0, 0), 12, 1.0, 0, 0);
 }
 
 .menu-item.selected .menu-label {
@@ -389,6 +389,14 @@
     -fx-stroke-width: 3;
 }
 
+.trading-resource-box {
+    -fx-font-size: 20;
+    -fx-border-color: black;
+    -fx-border-width: 4;
+    -fx-font-family: "Oswald";
+    -fx-effect: dropshadow(one-pass-box, rgb(255, 255, 255), 6, 1.0, 0, 0);
+}
+
 .action-button {
     -fx-padding: 5; 
     -fx-font-size: 20;
@@ -424,8 +432,37 @@
     -fx-opacity: 0.2;
 }
 
-.action-button:disabled .text{
-    -fx-fill: transparent;
+.action-button-accept {
+    -fx-background-color: #2ecc71;
+}
+
+.action-button-accept:hover  {
+    -fx-background-color: #4ef594;
+}
+
+
+.action-button-reject {
+    -fx-background-color: #e74c3c;
+}
+
+.action-button-reject:hover {
+    -fx-background-color: #ee6657;
+}
+
+.trading-title {
+    -fx-font-size: 30; 
+    -fx-text-fill: white; 
+    -fx-font-weight: bold;
+    -fx-font-family: "Oswald";
+    -fx-effect: dropshadow(one-pass-box, black, 10, 1.0, 0, 0);
+}
+
+.trading-resource-title {
+    -fx-font-size: 14; 
+    -fx-text-fill: white; 
+    -fx-font-weight: bold;
+    -fx-font-family: "Oswald";
+    -fx-effect: dropshadow(one-pass-box, black, 10, 1.0, 0, 0);
 }
 
 .turn-hint-box {
@@ -446,28 +483,6 @@
     -fx-padding: 0 12 0 12;
 }
 
-.dev-card:hover{
-    -fx-opacity: 1;
-    -fx-translate-y: -3;
-
-    -fx-scale-x: 1.05;
-    -fx-scale-y: 1.05;
-
-    -fx-background-color: rgb(75, 75, 75);
-    -fx-effect: dropshadow(one-pass-box, rgb(0, 0, 0), 8, 1.0, 0, 0);
-    -fx-transition: all 1.0s ease-in-out; /* Smooth transition */
-}
-
-.dev-card:pressed {
-    -fx-translate-y: 2
- 
-}
-
-.dev-card {
-    -fx-opacity: 0.5;
-    -fx-transition: all 1.0s ease-in-out; /* Smooth transition */
-}
-
 .numberLineCurrent {
     -fx-pref-width: 27px;
     -fx-alignment: center;
@@ -476,6 +491,127 @@
     -fx-text-fill: rgb(255, 0, 0); 
     -fx-effect: dropshadow(one-pass-box, rgb(0, 0, 0), 8, 1.0, 0, 0);
     -fx-translate-y: -1;
+}
+
+.spinner.trading-resource-title {
+    -fx-font-family: "Oswald";
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-text-fill: rgb(255, 255, 255);
+    -fx-effect: dropshadow(one-pass-box, black, 10, 1.0, 0, 0);
+    -fx-border-color: black;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+/* Spinner arrows buttons */
+.spinner.trading-resource-title .increment-arrow-button,
+.spinner.trading-resource-title .decrement-arrow-button {
+    -fx-text-fill: rgb(255, 255, 255);
+    -fx-background-color: #000000; /* darker shade */
+    -fx-padding: 10;
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+}
+
+/* Arrow symbol inside buttons */
+.spinner.trading-resource-title .increment-arrow-button .arrow,
+.spinner.trading-resource-title .decrement-arrow-button .arrow {
+    -fx-background-color: rgb(0, 0, 0);
+}
+
+/* Arrow hover effect */
+.spinner.trading-resource-title .increment-arrow-button:hover {
+    -fx-background-color: #2ecc71;
+}
+
+.spinner.trading-resource-title .decrement-arrow-button:hover{
+    -fx-background-color: #cb4343;
+}
+
+/* Optional: pressed effect */
+.spinner.trading-resource-title .increment-arrow-button:pressed,
+.spinner.trading-resource-title .decrement-arrow-button:pressed {
+    -fx-background-color: #000000;
+}
+
+.backButton:hover 
+{
+    -fx-background-color: #cb4343;
+}
+
+.backButton:pressed {
+    -fx-background-color: #000000;   
+}
+
+.nextButton:hover{
+    -fx-background-color: #2ecc71;
+}
+
+.nextButton:pressed {
+    -fx-background-color: #000000;   
+}
+
+.dev-card {
+    -fx-background-color: #fdb76b;  /* matches your desired card bg */
+    -fx-border-color: black;
+    -fx-border-width: 2;
+    -fx-border-radius: 6;
+    -fx-background-radius: 8;
+    -fx-opacity: 1.0;
+    -fx-padding: 5;
+    -fx-alignment: TOP_CENTER;ease
+}
+
+/* Card name label */
+.dev-card-name-label {
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-font-family: "Oswald";
+    -fx-text-fill: black;
+    -fx-effect: dropshadow(one-pass-box, rgb(255, 255, 255), 6, 1.0, 0, 0);
+}
+
+/* Card description text */
+.dev-card-description-label {
+    -fx-font-size: 13;
+    -fx-font-family: "Oswald";
+    -fx-text-fill: black;
+}
+
+.radial-radio {
+    -fx-text-fill: transparent;   /* hide text if icon-only */
+}
+
+/* Outer circle */
+.radial-radio .radio {
+    -fx-background-color: #e74c3c;     /* red when NOT selected */
+    -fx-background-radius: 50%;
+    -fx-padding: 8px;                  /* controls size */
+    -fx-border-radius: 50%;
+    -fx-border-color: white;
+    -fx-border-width: 2px;
+}
+
+/* Inner dot (default invisible) */
+.radial-radio .dot {
+    -fx-background-color: transparent;
+}
+
+/* When selected */
+.radial-radio:selected .radio {
+    -fx-background-color: #2ecc71;     /* green */
+}
+
+/* Optional pressed effect */
+.radial-radio:pressed .radio {
+    -fx-scale-x: 0.9;
+    -fx-scale-y: 0.9;
+}
+
+/* Hover effect */
+.radial-radio:hover .radio {
+    -fx-opacity: 0.85;
 }
 
 /* -----------------------*/
@@ -657,4 +793,11 @@
 .badge.winner {
     -fx-background-color: rgba(255, 215, 0, 0.18);
     -fx-text-fill: gold;
+}
+
+
+.tooltip {
+    -fx-background-color: black;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
 }

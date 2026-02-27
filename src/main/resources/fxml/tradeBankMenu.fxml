@@ -47,6 +47,6 @@
         <!-- Added Dynamically -->
     </HBox>
 
-    <Button fx:id="confirmTradeButton" onAction="#handleConfirmTrade" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+    <Button fx:id="confirmTradeButton" onAction="#handleConfirmTrade" HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="action-button"/>
 
 </VBox>

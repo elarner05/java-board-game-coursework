@@ -83,5 +83,4 @@ public class SetupViewModel {
         GameViewModel gameVM = new GameViewModel(gameModel, navigationService);
         navigationService.navigateTo("gameScreen", gameVM);
     }
-
 }

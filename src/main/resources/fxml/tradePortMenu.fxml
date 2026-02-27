@@ -23,7 +23,7 @@
     xmlns="http://javafx.com/javafx"
     xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="com.example.view.TradePortMenuController"
-    style="-fx-padding: 20;">
+    style="-fx-padding: 30;">
 
  <Label fx:id="portTradeTitleLabel"
         style="-fx-font-size: 24px;
@@ -31,7 +31,7 @@
                -fx-text-fill: white;" />
 
     <HBox fx:id="giveResourceBox"
-        spacing="10"
+        spacing="2"
         alignment="CENTER"
         prefWidth="400">
 
@@ -40,7 +40,7 @@
     </HBox>
 
     <HBox fx:id="selectPortBox"
-        spacing="10"
+        spacing="2"
         alignment="CENTER"
         prefWidth="400">
 
@@ -48,13 +48,13 @@
     </HBox>
 
     <HBox fx:id="receiveResourceBox"
-        spacing="10"
+        spacing="2"
         alignment="CENTER"
         prefWidth="400">
 
         <!-- Added Dynamically -->
     </HBox>
 
-    <Button fx:id="confirmTradeButton" onAction="#handleConfirmTrade" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+    <Button fx:id="confirmTradeButton" onAction="#handleConfirmTrade" HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="action-button"/>
 
 </VBox>

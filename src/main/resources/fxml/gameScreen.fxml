@@ -55,31 +55,31 @@
 
         </Polygon>
 
-        <!-- Large left-side pentagon -->
-        <Polygon fx:id="smallTriangle"
-            fill="#e43b29"
-            stroke="#e43b29"
-            strokeWidth="5"
-            layoutX="0"
-            layoutY="0">
-            <points>
-                <!-- Top-Right -->
-                <Double fx:value="715.0" />
-                <Double fx:value="774.0" />
-                <!-- Bottom-Right -->
-                <Double fx:value="715.0" />
-                <Double fx:value="864.0" />
-                <!-- Bottom-Left -->
-                <Double fx:value="660.0" />
-                <Double fx:value="864.0" />
-            </points>
-        </Polygon>
+    <!-- Large left-side pentagon -->
+    <Polygon fx:id="smallTriangle"
+        fill="#e43b29"
+        stroke="#e43b29"
+        strokeWidth="5"
+        layoutX="0"
+        layoutY="0">
+        <points>
+            <!-- Top-Right -->
+            <Double fx:value="715.0" />
+            <Double fx:value="774.0" />
+            <!-- Bottom-Right -->
+            <Double fx:value="715.0" />
+            <Double fx:value="864.0" />
+            <!-- Bottom-Left -->
+            <Double fx:value="660.0" />
+            <Double fx:value="864.0" />
+        </points>
+    </Polygon>
+
+    <!-- Main board pane with tiles -->
+    <Pane fx:id="borderPane"/>
 
         <!-- Main board pane with tiles -->
-        <Pane fx:id="borderPane" prefWidth="1000" prefHeight="800" />
-
-        <!-- Main board pane with tiles -->
-        <Pane fx:id="catanBoardPane" prefWidth="1000" prefHeight="800" />
+        <Pane fx:id="catanBoardPane"/>
 
         <!-- Pane for vertices, automatically on top -->
         <Pane fx:id="roadsPane" pickOnBounds="false" />
@@ -90,65 +90,56 @@
         <!-- Pane for vertices, automatically on top -->
         <Pane fx:id="vertexPane" pickOnBounds="false" />
 
-        <VBox>
-            <Button fx:id="giveSettlementResourcesButton" text="GIVE SETTLEMENT RESOURCES"
-                onAction="#giveSettlementResources" />
-            <Button fx:id="giveCityResourcesButton" text="GIVE CITY RESOURCES"
-                onAction="#giveCityResources" />
-            <Button fx:id="giveRoadResourcesButton" text="GIVE ROAD RESOURCES"
-                onAction="#giveRoadResources" />
-        </VBox>
+    <VBox>
+        <Button fx:id="giveSettlementResourcesButton" text="GIVE SETTLEMENT RESOURCES"
+            onAction="#giveSettlementResources" />
+        <Button fx:id="giveCityResourcesButton" text="GIVE CITY RESOURCES"
+            onAction="#giveCityResources" />
+        <Button fx:id="giveRoadResourcesButton" text="GIVE ROAD RESOURCES"
+            onAction="#giveRoadResources" />
+    </VBox>
 
-        <!-- Bottom half: current player info + bottom HUD -->
-        <Pane fx:id="bottomPane" layoutY="432"
-         prefHeight="432" prefWidth="819">
-            <!-- Added Dynamically Here -->
-        </Pane>
-        <Pane fx:id="playerColumnPane" layoutX="717" prefWidth="819" prefHeight="864"
-            styleClass="columnPane">
+    <Pane fx:id="playerColumnPane" layoutX="717" prefWidth="819" prefHeight="864" styleClass="columnPane">
 
-            <StackPane fx:id="climateTrackerBox" alignment="TOP_RIGHT" layoutX="25" layoutY="10"
-                prefWidth="768" prefHeight="70">
+        <StackPane fx:id="climateTrackerBox" alignment="TOP_RIGHT" layoutX="25" layoutY="10"
+            prefWidth="768" prefHeight="70">
+            
+            <Pane fx:id="numberLine"
+            prefWidth="750"
+            prefHeight="50"
+            layoutX="30"
+            layoutY="10"
+            styleClass="number-line-cont">
 
-                <Pane fx:id="numberLine"
-                    prefWidth="750"
-                    prefHeight="50"
-                    layoutX="30"
-                    layoutY="10"
-                    styleClass="number-line-cont">
-
-                    <!-- Arrow -->
-                    <Polygon fx:id="numberArrow"
+                <!-- Arrow -->
+                <Polygon fx:id="numberArrow"
                         layoutX="57"
                         layoutY="56"
                         styleClass="numArrow">
-                        <points>
-                            <Double fx:value="20.0" />
-                            <Double fx:value="15.0" />
-                            <Double fx:value="10.0" />
-                            <Double fx:value="0.0" />
-                            <Double fx:value="0.0" />
-                            <Double fx:value="15.0" />
-                        </points>
-                    </Polygon>
+                    <points>
+                        <Double fx:value="20.0"/>    <Double fx:value="15.0"/>
+                        <Double fx:value="10.0"/>  <Double fx:value="0.0"/>
+                        <Double fx:value="0.0"/>   <Double fx:value="15.0"/>
+                    </points>
+                </Polygon>
 
-                    <!-- Baseline -->
-                    <Rectangle x="50" y="10"
-                        width="700"
-                        height="10"
-                        fill="grey"
-                        arcWidth="5"
-                        arcHeight="5" />
+                <!-- Baseline -->
+                <Rectangle x="50" y="10"
+                    width="700"
+                    height="10"
+                    fill="grey"
+                    arcWidth="5"
+                    arcHeight="5"/>
 
 
-                    <!-- Numbers -->
-                    <HBox fx:id="numberLineBox"
-                        alignment="CENTER"
-                        spacing="0"
-                        prefWidth="700"
-                        layoutX="50"
-                        layoutY="22"
-                        styleClass="number-line">
+                <!-- Numbers -->
+                <HBox fx:id="numberLineBox"
+                    alignment="CENTER"
+                    spacing="0"
+                    prefWidth="700"
+                    layoutX="50"
+                    layoutY="22"
+                    styleClass="number-line">
 
                         <Label text="0" styleClass="numLineNum-5" />
                         <Label text="2" styleClass="numLineNum" />
@@ -177,9 +168,6 @@
                         <Label text="48" styleClass="numLineNum" />
                         <Label text="50" styleClass="numLineNum-5" />
 
-                    </HBox>
-                </Pane>
-            </StackPane>
 
             <!-- Top half: player list -->
             <HBox fx:id="achievementTrackers" spacing="2" alignment="TOP_LEFT" layoutX="50"
@@ -228,37 +216,36 @@
                         StackPane.alignment="CENTER_RIGHT"
                         text="3 Min Required" translateX="-30" />
                 </StackPane>
-
             </HBox>
 
-            <!-- Top half: player list -->
-            <VBox fx:id="playerList" spacing="-5" alignment="TOP_CENTER" layoutX="60" layoutY="165"
-                prefWidth="768" prefHeight="282">
+        <!-- Top half: player list -->
+        <VBox fx:id="playerList" spacing="-5" alignment="TOP_CENTER" layoutX="60" layoutY="165"
+            prefWidth="768" prefHeight="282">
 
-                <!-- Player rows will be added dynamically -->
-            </VBox>
+            <!-- Player rows will be added dynamically -->
+        </VBox>
 
-            <!-- Bottom half: current player info + bottom HUD -->
-            <Pane fx:id="bottomPane" layoutY="432" prefHeight="432" prefWidth="819">
-                <!-- Added Dynamically Here -->
-            </Pane>
+        <!-- Bottom half: current player info + bottom HUD -->
+        <Pane fx:id="bottomPane" layoutY="432" prefHeight="432" prefWidth="819">
+            <!-- Added Dynamically Here -->
         </Pane>
+    </Pane>
     </Pane>
 
     <!-- POPUP OVERLAY -->
     <StackPane fx:id="popupOverlay"
         visible="false"
         alignment="CENTER"
-        style="-fx-background-color: rgba(0,0,0,0.5);">
+        style="-fx-background-color: rgba(0, 0, 0, 0.5)">
 
         <!-- Actual popup box -->
         <StackPane fx:id="tradingMenuPopup"
             visible="false"
             alignment="CENTER"
-            maxWidth="800"
+            maxWidth="1200"
             maxHeight="700"
             style="
-                -fx-background-color: #1e1e2f;
+                -fx-background-color: rgba(50, 50, 50, 1.0);
                 -fx-background-radius: 12;
                 -fx-border-radius: 12;
                 -fx-border-color: white;
@@ -276,7 +263,7 @@
             maxWidth="800"
             maxHeight="700"
             style="
-                -fx-background-color: #1e1e2f;
+                -fx-background-color: rgba(50, 50, 50, 1.0);
                 -fx-background-radius: 12;
                 -fx-border-radius: 12;
                 -fx-border-color: white;
