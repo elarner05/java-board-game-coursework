@@ -189,7 +189,7 @@ public class CurrentPlayerController {
     private Image loadDiceImage(int value, char color) {
         return new Image(
                 getClass().getResourceAsStream(
-                        "/images/" + color + "die" + value + ".png"));
+                        "/images/" + color + "Die" + value + ".png"));
     }
 
     private void populateDevCards() {
