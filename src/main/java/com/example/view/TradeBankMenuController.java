@@ -64,6 +64,9 @@ public class TradeBankMenuController {
     public void initialize() {
         bankTradeTitleLabel.setText(LangManager.get("bankTradeTitleLabel"));
         confirmTradeButton.setText(LangManager.get("confirmTradeButton"));
+
+        giveResourceBox.setSpacing(150);
+        receiveResourceBox.setSpacing(150);
     }
 
     private void updateResourceBoxes(GameViewModel viewModel) {
@@ -111,6 +114,7 @@ public class TradeBankMenuController {
             RadioButton radioButton = new RadioButton();
             radioButton.setToggleGroup(toggleGroup);
             radioButton.setUserData(resourceViewState.configProperty().get());
+            radioButton.getStyleClass().add("radial-radio");
             root.getChildren().add(radioButton);
             radioButton.disableProperty().bind(
                     resourceViewState.countProperty().lessThan(requiredAmount)

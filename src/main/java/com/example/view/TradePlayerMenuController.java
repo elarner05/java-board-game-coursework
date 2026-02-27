@@ -22,6 +22,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
@@ -115,10 +116,16 @@ public class TradePlayerMenuController {
 
         VBox selectBox = new VBox();
         selectBox.setStyle("-fx-border-color: black; -fx-background-color: "
-                + resourceViewState.configProperty().get().colorHex + "; -fx-padding: 5;");
-        Label nameLabel = new Label(LangManager.get(resourceViewState.configProperty().get().id + ".name"));
+                + resourceViewState.configProperty().get().colorHex + "; -fx-padding: 10; -fx-spacing: 10;");
+        selectBox.getStyleClass().setAll("trading-resource-box");
+        Label nameLabel = new Label(
+            LangManager.get(resourceViewState.configProperty().get().id + ".name")
+            + "    "
+            + resourceViewState.configProperty().get().symbol
+        );        nameLabel.getStyleClass().setAll("trading-resource-title");
         Spinner<Integer> spinner = new Spinner<>(valueFactory);
         spinner.setEditable(true);
+        spinner.getStyleClass().setAll("spinner", "trading-resource-title");
 
         // Bind max to the current resource count dynamically
         valueFactory.maxProperty().bind(resourceViewState.countProperty());
@@ -141,8 +148,14 @@ public class TradePlayerMenuController {
 
         VBox selectBox = new VBox();
         selectBox.setStyle("-fx-border-color: black; -fx-background-color: "
-                + resourceViewState.configProperty().get().colorHex + "; -fx-padding: 5;");
-        Label nameLabel = new Label(LangManager.get(resourceViewState.configProperty().get().id + ".name"));
+                + resourceViewState.configProperty().get().colorHex + "; -fx-padding: 10; -fx-spacing: 10");
+        selectBox.getStyleClass().setAll("trading-resource-box");
+        Label nameLabel = new Label(
+            LangManager.get(resourceViewState.configProperty().get().id + ".name")
+            + "    "
+            + resourceViewState.configProperty().get().symbol
+        );
+        nameLabel.getStyleClass().setAll("trading-resource-title");
         int max = players.stream()
                 .mapToInt(player -> player.getResources().stream()
                         .filter(r -> r.configProperty().get().equals(
@@ -153,6 +166,7 @@ public class TradePlayerMenuController {
                 .orElse(0);
         Spinner<Integer> spinner = new Spinner<>(0, max, 0);
         spinner.setEditable(true);
+        spinner.getStyleClass().setAll("spinner", "trading-resource-title");
         spinner.valueProperty().addListener((obs, oldValue, newValue) -> {
 
             HashMap<ResourceConfig, Integer> selected = getSelectedResources(receiveResourceBox);
@@ -217,9 +231,11 @@ public class TradePlayerMenuController {
                 (int) (fxColor.getRed() * 255),
                 (int) (fxColor.getGreen() * 255),
                 (int) (fxColor.getBlue() * 255));
-        acceptBox.setStyle("-fx-border-color: black; -fx-padding: 5; -fx-background-color: " + cssColor + ";");
+        acceptBox.setStyle("-fx-border-color: black; -fx-padding: 15; -fx-spacing: 5; -fx-background-color: " + cssColor + ";");
         Label nameLabel = new Label(player.nameProperty().get());
-        Button acceptButton = new Button("Accept");
+        Button acceptButton = new Button("✓ - Accept");
+        acceptButton.setPrefWidth(80);
+        acceptBox.setAlignment(Pos.CENTER);
         acceptButton.setUserData(player.idProperty().get());
         acceptButton.disableProperty().bind(
                 Bindings.createBooleanBinding(
@@ -242,7 +258,9 @@ public class TradePlayerMenuController {
             selectedPlayerID.set((Integer) acceptButton.getUserData());
             handleConfirmTrade();
         });
-        Button rejectButton = new Button("Reject");
+        Button rejectButton = new Button("X - Reject");
+        rejectButton.setPrefWidth(80);
+        rejectButton.setAlignment(Pos.CENTER);
         rejectButton.setUserData(player.idProperty().get());
         rejectButton.disableProperty().bind(
                 Bindings.createBooleanBinding(
@@ -265,6 +283,11 @@ public class TradePlayerMenuController {
             }
             playerAcceptOrderStack.remove((Integer) playerId);
         });
+
+        acceptBox.getStyleClass().setAll("trading-resource-box");
+        acceptButton.getStyleClass().setAll("action-button", "action-button-accept");
+        rejectButton.getStyleClass().setAll("action-button", "action-button-reject");
+
 
         acceptBox.getChildren().addAll(nameLabel, acceptButton, rejectButton);
         return acceptBox;

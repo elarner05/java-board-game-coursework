@@ -31,6 +31,22 @@
         StackPane.alignment="CENTER_LEFT"
         translateX="0" />
 
+    <!-- <Polygon fx:id="bottomBackground"
+                styleClass="parallelogram"
+                stroke="black"
+                strokeWidth="8">
+                <points>
+                    <Double fx:value="45.0" />
+                    <Double fx:value="0.0" />
+                    <Double fx:value="819.0" />
+                    <Double fx:value="0.0" />
+                    <Double fx:value="819.0" />
+                    <Double fx:value="432.0" />
+                    <Double fx:value="0.0" />
+                    <Double fx:value="432.0" />
+                </points>
+            </Polygon> -->
+
     <!-- Current player info -->
     <StackPane fx:id="currentPlayerPane" alignment="TOP_CENTER" prefHeight="50"
         prefWidth="819" layoutY="20" translateX="70">

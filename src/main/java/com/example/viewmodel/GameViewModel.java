@@ -558,6 +558,7 @@ public final class GameViewModel {
         int nextPlayerIndex = getIndexOfPlayerWithID(nextPlayerID);
         currentPlayer.set(players.remove(nextPlayerIndex));
 
+        // example rule
         switchToRollDiceState();
     }
 

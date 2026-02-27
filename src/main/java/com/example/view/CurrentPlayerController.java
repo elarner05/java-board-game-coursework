@@ -20,6 +20,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 
 public class CurrentPlayerController {
@@ -55,6 +56,8 @@ public class CurrentPlayerController {
     private Button tradeButton;
     @FXML
     private Button endTurnButton;
+    @FXML
+    private Polygon smallTriangle;
     @FXML
     private Label currentPlayerScoreLabel;
     @FXML  
@@ -273,7 +276,7 @@ public class CurrentPlayerController {
         viewModel.nextPlayer();
 
         System.out.println("Next player: " +
-                viewModel.getCurrentPlayer().nameProperty().get());
+            viewModel.getCurrentPlayer().nameProperty().get());
     }
 
     public void rollDice() {
