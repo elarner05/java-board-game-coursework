@@ -8,7 +8,7 @@ public class ClimateTracker {
 
     public ClimateTracker() {
         this.climateLevel = 0;
-        this.nextDisasterCard = 5;
+        this.nextDisasterCard = 10;
         this.giveDisasterCard = false;
     }
 
@@ -18,7 +18,7 @@ public class ClimateTracker {
         climateLevel++;
         if (climateLevel >= nextDisasterCard) {
             giveDisasterCard = true;
-            nextDisasterCard += 5;
+            nextDisasterCard += 10;
         }
     }
 
@@ -32,13 +32,13 @@ public class ClimateTracker {
 
     public int disasterCardNum() {
         int totalCards = 0;
-        if (nextDisasterCard > 5) {
-            totalCards++;
-        }
         if (nextDisasterCard > 10) {
             totalCards++;
         }
-        if (nextDisasterCard > 15) {
+        if (nextDisasterCard > 20) {
+            totalCards++;
+        }
+        if (nextDisasterCard > 30) {
             totalCards++;
         }
         return totalCards;
@@ -46,7 +46,7 @@ public class ClimateTracker {
 
     public void resetClimateLevels() {
         climateLevel = 0;
-        nextDisasterCard = 5;
+        nextDisasterCard = 10;
         giveDisasterCard = false;
     }
     
