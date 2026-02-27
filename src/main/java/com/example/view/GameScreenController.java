@@ -27,6 +27,7 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -180,6 +181,7 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
             }
         });
 
+        portsPane.toFront();
     }
 
     private void bindTradingMenu() {
@@ -660,115 +662,61 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
 
     private void setVertex(int vertexId, int playerOwner, String type) 
     {
-
         if (vertexId < 0 || vertexId >= vertexNodes.length || vertexNodes[vertexId] == null) {
             return;
         }
 
-        // Remove old node
+        // Remove old vertex node
         vertexPane.getChildren().remove(vertexNodes[vertexId]);
 
+        // Determine fill color
         Color fillColor = viewModel.getPlayerColor(playerOwner);
 
         double layoutX = vertexNodes[vertexId].getLayoutX();
         double layoutY = vertexNodes[vertexId].getLayoutY();
 
         Shape newVertex;
-
-        if ("player_infrastructure.city".equals(type)) {
-            newVertex = createSquareVertex(fillColor, layoutX, layoutY);
-        } else if ("player_infrastructure.settlement".equals(type)) {
-            newVertex = createCircleVertex(fillColor, layoutX, layoutY);
-        } else {
-            newVertex = createCircleVertex(Color.GREY, layoutX, layoutY);
+        switch (type) {
+            case "player_infrastructure.city" -> newVertex = createSquareVertex(fillColor, layoutX, layoutY);
+            case "player_infrastructure.settlement" -> newVertex = createCircleVertex(fillColor, layoutX, layoutY);
+            default -> newVertex = createCircleVertex(Color.GREY, layoutX, layoutY);
         }
 
         vertexNodes[vertexId] = newVertex;
         vertexPane.getChildren().add(newVertex);
 
         // -------------------------
-        // PORT RENDERING (Improved)
+        // HIGHLIGHT PORT VERTICES
         // -------------------------
-
         int portId = vertexToPort[vertexId];
-
         if (portId == -1) return;
 
-        // Render only once (first vertex in pair)
-        int v1 = viewModel.getPorts()[portId][0];
-        if (vertexId != v1) return;
+        int[] portVertices = viewModel.getPorts()[portId];
 
-        // Remove old port node if present
-        if (portDecorations[portId] != null) {
-            portsPane.getChildren().remove(portDecorations[portId]);
-            portDecorations[portId] = null;
+        for (int v : portVertices) {
+            Shape vertex = vertexNodes[v];
+
+            // Skip if null
+            if (vertex == null) continue;
+
+            // Delay until layout is ready
+            Platform.runLater(() -> {
+                Bounds bounds = vertex.localToParent(vertex.getBoundsInLocal());
+                double centerX = bounds.getCenterX();
+                double centerY = bounds.getCenterY();
+
+                Circle highlight = new Circle(17);
+                highlight.setFill(Color.TRANSPARENT);
+                highlight.setStroke(Color.CRIMSON);
+                highlight.setStrokeWidth(3);
+                highlight.setMouseTransparent(true);
+
+                highlight.setLayoutX(centerX);
+                highlight.setLayoutY(centerY);
+
+                portsPane.getChildren().add(highlight);
+            });
         }
-
-        int v2 = viewModel.getPorts()[portId][1];
-
-        Shape vertex1 = vertexNodes[v1];
-        Shape vertex2 = vertexNodes[v2];
-
-        double x1 = vertex1.getLayoutX();
-        double y1 = vertex1.getLayoutY();
-        double x2 = vertex2.getLayoutX();
-        double y2 = vertex2.getLayoutY();
-
-        // Midpoint
-        double midX = (x1 + x2) / 2;
-        double midY = (y1 + y2) / 2;
-
-        Bounds centerTileBounds = tileGroup[9].getBoundsInParent();
-
-        // Extract x and y into separate variables
-        double boardCenterX = centerTileBounds.getMinX();
-        double boardCenterY = centerTileBounds.getMinY();
-
-        double dx = midX - boardCenterX;
-        double dy = midY - boardCenterY;
-        double length = Math.hypot(dx, dy);
-
-        double pushDistance = 80;
-
-        double finalX = midX + (dx / length) * pushDistance;
-        double finalY = midY + (dy / length) * pushDistance;
-
-        // ------------------------
-        // SYMBOL-BASED PORT BADGE
-        // ------------------------
-        
-        StackPane badge = createSymbolPortBadge();
-
-        // Center badge
-        badge.setLayoutX(finalX);
-        badge.setLayoutY(finalY);
-
-        // Rotate outward
-        double angle = Math.toDegrees(Math.atan2(dy, dx));
-        badge.setRotate(angle + 90);
-
-        badge.setMouseTransparent(true);
-
-        portDecorations[portId] = badge;
-        //portsPane.getChildren().add(badge);
-    }
-
-    private StackPane createSymbolPortBadge() 
-    {
-        StackPane root = new StackPane();
-
-        Circle bg = new Circle(22);
-        bg.setFill(Color.BEIGE);
-        bg.setStroke(Color.SADDLEBROWN);
-        bg.setStrokeWidth(3);
-
-        Text questionMark = new Text("?");
-        questionMark.setFont(mainFont);
-        questionMark.setFill(Color.BLACK);
-
-        root.getChildren().addAll(bg, questionMark);
-
-        return root;
     }
 
     private Shape createCircleVertex(Color fillColor, double layoutX, double layoutY) 

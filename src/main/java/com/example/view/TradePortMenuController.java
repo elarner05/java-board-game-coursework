@@ -70,9 +70,8 @@ public class TradePortMenuController {
         portTradeTitleLabel.setText(LangManager.get("portTradeTitleLabel"));
         confirmTradeButton.setText(LangManager.get("confirmTradeButton"));
 
-        giveResourceBox.setSpacing(100);
-        receiveResourceBox.setSpacing(100);
-        selectPortBox.setSpacing(20);   // optional
+        giveResourceBox.setSpacing(150);
+        receiveResourceBox.setSpacing(150);
     }
 
     private void updateResourceBoxes(GameViewModel viewModel) {
@@ -118,6 +117,7 @@ public class TradePortMenuController {
             RadioButton radioButton = new RadioButton();
             radioButton.setToggleGroup(toggleGroup);
             radioButton.setUserData(resourceViewState.configProperty().get());
+            radioButton.getStyleClass().add("radial-radio");
             root.getChildren().add(radioButton);
             radioButton.disableProperty().bind(
                     Bindings.createBooleanBinding(
@@ -157,6 +157,7 @@ public class TradePortMenuController {
             radioButton.setToggleGroup(toggleGroup);
             radioButton.setUserData(resourceViewState.configProperty().get());
             root.getChildren().add(radioButton);
+            radioButton.getStyleClass().add("radial-radio");
             radioButton.disableProperty().bind(
                     resourceViewState.countProperty().lessThan(1)
                             .or(

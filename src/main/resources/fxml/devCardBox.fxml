@@ -21,25 +21,25 @@
 <StackPane fx:id="rootPane"
     xmlns="http://javafx.com/javafx"
     xmlns:fx="http://javafx.com/fxml/1"
-    prefHeight="300" prefWidth="50"
+    prefHeight="275" prefWidth="50"
     fx:controller="com.example.view.DevCardBoxController">
 
-    <VBox alignment="CENTER" spacing="10" maxWidth="150" maxHeight="300">
-        <StackPane fx:id="devCardStackPane" alignment="CENTER" maxHeight="200" maxWidth="150"
-            prefHeight="200" prefWidth="150">
-            <VBox style="-fx-background-color: #f0e4d7; -fx-padding: 10;" alignment="TOP_CENTER"
-                maxWidth="150">
+    <VBox alignment="CENTER" spacing="10" maxWidth="150" maxHeight="275">
+        <StackPane fx:id="devCardStackPane" alignment="CENTER" maxHeight="165" maxWidth="150"
+            prefHeight="165" prefWidth="150">
+            <VBox style="-fx-padding: 5;" alignment="TOP_CENTER"
+                maxWidth="150" styleClass="dev-card">
                 <Label fx:id="cardNameLabel" text="Card Name" styleClass="dev-card-name-label" />
                 <Text fx:id="cardDescriptionLabel" text="Card Description"
                     styleClass="dev-card-description-label"
                     wrappingWidth="130" />
-                <Button fx:id="playCardButton" text="Play Card" onAction="#playDevCard" />
+                <Button fx:id="playCardButton" styleClass="action-button" text="Play Card" onAction="#playDevCard" />
             </VBox>
 
         </StackPane>
         <HBox alignment="CENTER" spacing="20">
-            <Button fx:id="backButton" text="Back" onAction="#showPreviousDevCard" />
-            <Button fx:id="nextButton" text="Next" onAction="#showNextDevCard" />
+            <Button fx:id="backButton" text="Back" onAction="#showPreviousDevCard" styleClass="action-button" />
+            <Button fx:id="nextButton" text="Next" onAction="#showNextDevCard" styleClass="action-button" />
         </HBox>
     </VBox>
 </StackPane>

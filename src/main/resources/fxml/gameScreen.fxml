@@ -76,10 +76,10 @@
     </Polygon>
 
     <!-- Main board pane with tiles -->
-    <Pane fx:id="borderPane" prefWidth="1000" prefHeight="800" />
+    <Pane fx:id="borderPane"/>
 
         <!-- Main board pane with tiles -->
-        <Pane fx:id="catanBoardPane" prefWidth="1000" prefHeight="800" />
+        <Pane fx:id="catanBoardPane"/>
 
         <!-- Pane for vertices, automatically on top -->
         <Pane fx:id="roadsPane" pickOnBounds="false" />
@@ -233,7 +233,7 @@
     <StackPane fx:id="popupOverlay"
         visible="false"
         alignment="CENTER"
-        style="-fx-background-color: rgba(0,0,0,0.5);">
+        style="-fx-background-color: rgba(0, 0, 0, 0.5)">
 
         <!-- Actual popup box -->
         <StackPane fx:id="tradingMenuPopup"
@@ -242,7 +242,7 @@
             maxWidth="800"
             maxHeight="700"
             style="
-                -fx-background-color: #1e1e2f;
+                -fx-background-color: rgba(50, 50, 50, 1.0);
                 -fx-background-radius: 12;
                 -fx-border-radius: 12;
                 -fx-border-color: white;
@@ -260,7 +260,7 @@
             maxWidth="800"
             maxHeight="700"
             style="
-                -fx-background-color: #1e1e2f;
+                -fx-background-color: rgba(50, 50, 50, 1.0);
                 -fx-background-radius: 12;
                 -fx-border-radius: 12;
                 -fx-border-color: white;

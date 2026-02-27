@@ -13,6 +13,7 @@ import javafx.animation.KeyValue;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
+import javafx.scene.control.Tooltip;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
@@ -70,7 +71,7 @@ public class TitleScreenController implements ViewModelAware<TitleViewModel> {
 
         playText.setText(LangManager.get("playText"));
         settingsText.setText(LangManager.get("settingsText"));
-        exitText.setText(LangManager.get("exitText"));
+        exitText.setText(LangManager.get("exitText"));                     
     }
 
     // Added to the Exit 'Button'
