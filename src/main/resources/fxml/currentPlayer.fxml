@@ -200,6 +200,7 @@
                                     styleClass="action-button"/>
                             <Button fx:id="endTurnButton"
                                     onAction="#endTurn"
+                                    text="End Turn"
                                     prefWidth="250"
                                     prefHeight="60"
                                     styleClass="action-button"/>
