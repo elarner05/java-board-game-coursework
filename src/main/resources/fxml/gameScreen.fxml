@@ -151,31 +151,31 @@
                         styleClass="number-line">
 
                         <Label text="0" styleClass="numLineNum-5" />
-                        <Label text="1" styleClass="numLineNum" />
                         <Label text="2" styleClass="numLineNum" />
-                        <Label text="3" styleClass="numLineNum" />
                         <Label text="4" styleClass="numLineNum" />
-                        <Label text="5" styleClass="numLineNum-5" />
                         <Label text="6" styleClass="numLineNum" />
-                        <Label text="7" styleClass="numLineNum" />
                         <Label text="8" styleClass="numLineNum" />
-                        <Label text="9" styleClass="numLineNum" />
                         <Label text="10" styleClass="numLineNum-5" />
-                        <Label text="11" styleClass="numLineNum" />
                         <Label text="12" styleClass="numLineNum" />
-                        <Label text="13" styleClass="numLineNum" />
                         <Label text="14" styleClass="numLineNum" />
-                        <Label text="15" styleClass="numLineNum-5" />
                         <Label text="16" styleClass="numLineNum" />
-                        <Label text="17" styleClass="numLineNum" />
                         <Label text="18" styleClass="numLineNum" />
-                        <Label text="19" styleClass="numLineNum" />
                         <Label text="20" styleClass="numLineNum-5" />
-                        <Label text="21" styleClass="numLineNum" />
                         <Label text="22" styleClass="numLineNum" />
-                        <Label text="23" styleClass="numLineNum" />
                         <Label text="24" styleClass="numLineNum" />
-                        <Label text="25" styleClass="numLineNum-5" />
+                        <Label text="26" styleClass="numLineNum" />
+                        <Label text="28" styleClass="numLineNum" />
+                        <Label text="30" styleClass="numLineNum-5" />
+                        <Label text="32" styleClass="numLineNum" />
+                        <Label text="34" styleClass="numLineNum" />
+                        <Label text="36" styleClass="numLineNum" />
+                        <Label text="38" styleClass="numLineNum" />
+                        <Label text="40" styleClass="numLineNum-5" />
+                        <Label text="42" styleClass="numLineNum" />
+                        <Label text="44" styleClass="numLineNum" />
+                        <Label text="46" styleClass="numLineNum" />
+                        <Label text="48" styleClass="numLineNum" />
+                        <Label text="50" styleClass="numLineNum-5" />
 
                     </HBox>
                 </Pane>

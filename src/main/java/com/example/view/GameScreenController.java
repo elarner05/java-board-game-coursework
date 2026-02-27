@@ -15,9 +15,9 @@ import com.example.viewmodel.viewstates.RoadViewState;
 import com.example.viewmodel.viewstates.TileViewState;
 import com.example.viewmodel.viewstates.VertexViewState;
 
+import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
-import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -25,21 +25,20 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.geometry.VPos;
-import javafx.scene.shape.Shape;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
-import javafx.scene.Node;
-import javafx.scene.effect.ColorAdjust;
-import javafx.scene.layout.Region;
 
 public class GameScreenController implements ViewModelAware<GameViewModel> {
     private GameViewModel viewModel;
@@ -237,8 +236,8 @@ public class GameScreenController implements ViewModelAware<GameViewModel> {
 
     private void updateClimateTrackerArrow(int climateLevel) {
         System.out.println("Updating climate tracker arrow to level " + climateLevel); // Debug
-        int offset = climateLevel * 27; // adjust as needed for spacing
-        numberArrow.setLayoutX(offset + 55);
+        double offset = climateLevel * 13.4;
+        numberArrow.setLayoutX(offset + 57);
     }
 
     private void bindTradingMenu() {
