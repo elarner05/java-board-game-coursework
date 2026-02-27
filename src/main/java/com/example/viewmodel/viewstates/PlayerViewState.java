@@ -28,6 +28,8 @@ public class PlayerViewState {
     private final BooleanProperty canBuildCity = new SimpleBooleanProperty();
     private final BooleanProperty canBuildRoad = new SimpleBooleanProperty();
     private final BooleanProperty canBuildDevCard = new SimpleBooleanProperty();
+    private final BooleanProperty canRepairTile = new SimpleBooleanProperty();
+
     private final ObjectProperty<Color> color = new SimpleObjectProperty<>();
 
     private final ObservableList<ResourceViewState> resources = FXCollections.observableArrayList();
@@ -49,6 +51,7 @@ public class PlayerViewState {
     public IntegerProperty realScoreProperty() {
         return realScore;
     }
+
     public BooleanProperty longestRoadProperty() {
         return longestRoad;
     }
@@ -71,6 +74,10 @@ public class PlayerViewState {
 
     public BooleanProperty canBuildDevCardProperty() {
         return canBuildDevCard;
+    }
+
+    public BooleanProperty canRepairTileProperty() {
+        return canRepairTile;
     }
 
     public ObjectProperty<Color> colorProperty() {

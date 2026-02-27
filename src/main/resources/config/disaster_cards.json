@@ -2,31 +2,31 @@
     {
         "id": "disaster_card.fields",
         "texturePath": "textures/disaster_cards/fields.png",
-        "tileAffected": "tiles.fields",
+        "tileAffected": "tile.fields",
         "count": 4
     },
     {
         "id": "disaster_card.forest",
         "texturePath": "textures/disaster_cards/forest.png",
-        "tileAffected": "tiles.forest",
+        "tileAffected": "tile.forest",
         "count": 4
     },
     {
         "id": "disaster_card.hills",
         "texturePath": "textures/disaster_cards/hills.png",
-        "tileAffected": "tiles.hills",
+        "tileAffected": "tile.hills",
         "count": 3
     },
     {
         "id": "disaster_card.mountains",
         "texturePath": "textures/disaster_cards/mountains.png",
-        "tileAffected": "tiles.mountains",
+        "tileAffected": "tile.mountains",
         "count": 3
     },
     {
         "id": "disaster_card.pasture",
         "texturePath": "textures/disaster_cards/pasture.png",
-        "tileAffected": "tiles.pasture",
+        "tileAffected": "tile.pasture",
         "count": 4
     }
 ]

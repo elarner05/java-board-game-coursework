@@ -23,12 +23,20 @@ public class DevCardBoxController {
     @FXML
     private StackPane devCardStackPane;
     @FXML
-    private Button backButton, nextButton;
+    private Button backButton, nextButton, playCardButton;
 
     @FXML
     private Label cardNameLabel;
     @FXML
     private Text cardDescriptionLabel;
+
+    @FXML
+    public void initialize() {
+        // Initially hide the dev card display
+        playCardButton.setText(LangManager.get("playCardButton"));
+        nextButton.setText(LangManager.get("nextButton"));
+        backButton.setText(LangManager.get("backButton"));
+    }
 
     public void bindDevCards(GameViewModel viewModel) {
         this.viewModel = viewModel;

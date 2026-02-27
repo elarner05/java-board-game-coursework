@@ -279,6 +279,19 @@ public class GameModel {
                 }
             }
 
+            // give starting resources based on second settlement placed
+            int numSettlements = getNumSettlementsOwnedByPlayer(id);
+            if (numSettlements == 2){
+                int resourceVertex = builtVertices.get(builtVertices.size() - 1);
+                Tile[] adjTiles = tiles.getAdjTiles(resourceVertex);
+                for (Tile t : adjTiles){
+                    if (t == null) continue;
+                    ResourceConfig resource = t.getResourceFromTileID();
+                    Player p = getPlayer(id);
+                    p.changeResourceCount(resource, 1);
+                }
+            }
+
         }
 
         // | Build Road Phase |
@@ -322,6 +335,13 @@ public class GameModel {
         // disable building without connecting to existing settlements
         passBuildRule = false;
 
+        // Reset Climate Tracker
+        climateTracker.resetClimateLevels();
+
+        // Repare any destroyed tiles
+        tiles.repareTiles();
+
+
         return true; // successful
     }
 
@@ -358,6 +378,19 @@ public class GameModel {
 
     public int getSettlmentOwner(int index) {
         return settlements.getAllSettlements()[index].getPlayerID();
+    }
+
+    public int getNumSettlementsOwnedByPlayer(int playerID){
+        int count = 0;
+
+        Settlement[] allSettlements = settlements.getAllSettlements();
+        for (Settlement s : allSettlements){
+            if (s.getPlayerID() == playerID){
+                count++;
+            }
+        }
+
+        return count;
     }
 
     public boolean settlementValid(int vertex, int playerID) {
@@ -456,8 +489,15 @@ public class GameModel {
     public boolean playerHasSettlementResources(int playerID) {
         Player player = getPlayer(playerID);
         String structureID = "player_infrastructure.settlement";
+        boolean validBuildSpace = false;
+        for (int i = 0; i < settlements.getAllSettlements().length; i++) {
+            if (settlementValid(i, playerID)) {
+                validBuildSpace = true;
+                break;
+            }
+        }
 
-        return player.hasEnoughResourcesForStructure(structureID) && player.getStructuresRemaining(structureID) > 0;
+        return player.hasEnoughResourcesForStructure(structureID) && player.getStructuresRemaining(structureID) > 0 && validBuildSpace;
     }
 
     public boolean buildCity(int vertex, int playerID) {
@@ -478,8 +518,15 @@ public class GameModel {
     public boolean playerHasCityResources(int playerID) {
         Player player = getPlayer(playerID);
         String structureID = "player_infrastructure.city";
+        boolean validBuildSpace = false;
+        for (int i = 0; i < settlements.getAllSettlements().length; i++) {
+            if (cityValid(i, playerID)) {
+                validBuildSpace = true;
+                break;
+            }
+        }
         
-        return player.hasEnoughResourcesForStructure(structureID) && player.getStructuresRemaining(structureID) > 0;
+        return player.hasEnoughResourcesForStructure(structureID) && player.getStructuresRemaining(structureID) > 0 && validBuildSpace;
     }
 
     public boolean buildRoad(int edgeIndex, int playerID) {
@@ -495,9 +542,17 @@ public class GameModel {
     public boolean playerHasRoadResources(int playerID) {
         Player player = getPlayer(playerID);
         String structureID = "player_infrastructure.road";
+        boolean validBuildSpace = false;
+        for (int i = 0; i < roads.getAllRoads().length; i++) {
+            if (roadValid(i, playerID)) {
+                validBuildSpace = true;
+                break;
+            }
+        }
 
-        return player.hasEnoughResourcesForStructure(structureID) && player.getStructuresRemaining(structureID) > 0;
+        return player.hasEnoughResourcesForStructure(structureID) && player.getStructuresRemaining(structureID) > 0 && validBuildSpace;
     }
+
 
     public boolean stealResource(int vertexIndex, int playerID) {
         if (!stealValid(vertexIndex, playerID)) {
@@ -871,7 +926,7 @@ public class GameModel {
         Player player = getPlayer(playerID);
         String structureID = "player_infrastructure.dev_card";
 
-        return player.hasEnoughResourcesForStructure(structureID) && player.getStructuresRemaining(structureID) > 0;
+        return player.hasEnoughResourcesForStructure(structureID) && player.getStructuresRemaining(structureID) > 0 && bankCards.hasDevelopmentCards();
     }
 
     public boolean buyDevelopmentCard(int playerId) {
@@ -1053,10 +1108,41 @@ public class GameModel {
     }
 
     public ArrayList<DevCardConfig> getPlayerDevCards(int playerId) {
-        Player player = getPlayer(playerId);
+            Player player = getPlayer(playerId);
         if (player == null)
             return new ArrayList<>();
         return player.getDevCards();
+    }
+
+    public ClimateTracker getClimateTracker() {
+        return climateTracker;
+    }
+
+    public boolean playerCanRepairAnyTile(int playerId) {
+        boolean canRepairSomeTile = false;
+        for (int i = 0; i < tiles.getTiles().length; i++) {
+            if (playerCanRepairTile(playerId, i)) {
+                canRepairSomeTile = true;
+                break;
+            }
+        }
+        return canRepairSomeTile;
+    }
+
+    public boolean playerCanRepairTile(int playerId, int tileIndex) {
+        Player player = getPlayer(playerId);
+        Tile tile = tiles.getTiles()[tileIndex];
+        if (player == null || tile == null || !tile.getIsDestroyed()) {
+            return false;
+        }
+
+        String structureId = tile.getTileID().replace("tile.", "player_infrastructure.") + "_tile";
+        PlayerInfrastructureConfig cfg = ConfigService.getInfrastructure(structureId);
+        if (cfg == null || cfg.constructionCosts.isEmpty()) {
+            return false; // no configured cost for this tile
+        }
+
+        return player.hasEnoughResourcesForStructure(structureId);
     }
 
     // TESTING METHODS

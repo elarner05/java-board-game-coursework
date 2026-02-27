@@ -27,7 +27,9 @@ import com.example.viewmodel.viewstates.RoadViewState;
 import com.example.viewmodel.viewstates.TileViewState;
 import com.example.viewmodel.viewstates.VertexViewState;
 
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -60,6 +62,7 @@ public final class GameViewModel {
 
     private final ObjectProperty<DiceViewState> diceRoll = new SimpleObjectProperty<>(new DiceViewState());
     private final ObjectProperty<BankViewState> bankState = new SimpleObjectProperty<>(new BankViewState());
+    private final IntegerProperty climateTracker = new SimpleIntegerProperty();
 
     private TurnState previousState = TurnState.DICE_ROLL;
 
@@ -73,6 +76,7 @@ public final class GameViewModel {
             tileState.number.set(tile.getNumber());
             tileState.resource.set(tile.getTileID());
             tileState.blocked.set(tile.getIsBlocked());
+            tileState.destroyed.set(tile.getIsDestroyed());
             tiles.add(tileState);
         }
 
@@ -114,6 +118,8 @@ public final class GameViewModel {
 
         updateDiceRoll();
         updatePlayerViewStates();
+
+        climateTracker.set(gameModel.getClimateTracker().getClimateLevel());
     }
 
     private void updateTurnHintText(TurnState state) {
@@ -133,6 +139,7 @@ public final class GameViewModel {
         playerState.canBuildCityProperty().set(gameModel.playerHasCityResources(player.getId()));
         playerState.canBuildRoadProperty().set(gameModel.playerHasRoadResources(player.getId()));
         playerState.canBuildDevCardProperty().set(gameModel.playerHasDevCardResources(player.getId()));
+        playerState.canRepairTileProperty().set(gameModel.playerCanRepairAnyTile(player.getId()));
 
         playerState.knownScoreProperty().set(player.getKnownVictoryPoints());
         playerState.realScoreProperty().set(player.getTotalVictoryPoints());
@@ -152,7 +159,7 @@ public final class GameViewModel {
         playerState.canBuildCityProperty().set(gameModel.playerHasCityResources(player.getId()));
         playerState.canBuildRoadProperty().set(gameModel.playerHasRoadResources(player.getId()));
         playerState.canBuildDevCardProperty().set(gameModel.playerHasDevCardResources(player.getId()));
-
+        playerState.canRepairTileProperty().set(gameModel.playerCanRepairAnyTile(player.getId()));
         playerState.knownScoreProperty().set(player.getKnownVictoryPoints());
         playerState.realScoreProperty().set(player.getTotalVictoryPoints());
         playerState.longestRoadProperty().set(gameModel.playerHasLongestRoad(player.getId()));
@@ -239,6 +246,7 @@ public final class GameViewModel {
             tiles.get(i).number.set(tile.getNumber());
             tiles.get(i).resource.set(tile.getTileID());
             tiles.get(i).blocked.set(tile.getIsBlocked());
+            tiles.get(i).destroyed.set(tile.getIsDestroyed());
         }
     }
 
@@ -280,6 +288,10 @@ public final class GameViewModel {
 
     public ObjectProperty<BankViewState> bankStateProperty() {
         return bankState;
+    }
+
+    public IntegerProperty climateTrackerProperty() {
+        return climateTracker;
     }
 
     public int[][] getTileVertices() {
@@ -341,6 +353,18 @@ public final class GameViewModel {
         }
     }
 
+    private boolean repairTile(int tileIndex) {
+        if (turnState.get() != TurnState.REPAIR_TILE) {
+            return false;
+        }
+        boolean success = gameModel.tileRestore(tileIndex, currentPlayer.get().idProperty().get());
+        if (success) {
+            updateTileViewStates();
+            return true;
+        }
+        return false;
+    }
+
     public void onVertexClicked(int vertexIndex) {
         switch (turnState.get()) {
             case BUILD_SETTLEMENT -> {
@@ -354,6 +378,24 @@ public final class GameViewModel {
             case STEAL_RESOURCE -> {
                 stealResource(vertexIndex);
                 switchToTradeState();
+            }
+            default -> {
+                // No action
+            }
+        }
+    }
+
+    public void onTileClicked(int vertexIndex) {
+        System.out.println("Tile " + vertexIndex + " clicked in state " + turnState.get());
+        switch (turnState.get()) {
+            case MOVE_ROBBER_STATE -> {
+                moveRobber(vertexIndex);
+            }
+            case REPAIR_TILE -> {
+                boolean success = repairTile(vertexIndex);
+                if (success) {
+                    switchToBuildState();
+                }
             }
             default -> {
                 // No action
@@ -525,6 +567,9 @@ public final class GameViewModel {
         setDefaultVisibility();
         updatePlayerViewStates();
         updateBankViewState(bankState.get());
+        climateTracker.set(gameModel.getClimateTracker().getClimateLevel());
+        updateTileViewStates();
+
     }
 
     public void rollDice() {
@@ -539,6 +584,7 @@ public final class GameViewModel {
             return;
         }
         switchToTradeState();
+        
     }
 
     public void switchToTradeState() {
@@ -546,7 +592,8 @@ public final class GameViewModel {
         setDefaultVisibility();
         updatePlayerViewStates();
         updateBankViewState(bankState.get());
-
+        climateTracker.set(gameModel.getClimateTracker().getClimateLevel());
+        updateTileViewStates();
     }
 
     public void switchToBuildState() {
@@ -554,6 +601,8 @@ public final class GameViewModel {
         setDefaultVisibility();
         updatePlayerViewStates();
         updateBankViewState(bankState.get());
+        climateTracker.set(gameModel.getClimateTracker().getClimateLevel());
+        updateTileViewStates();
     }
 
     public void switchToBuildSettlementState() {
@@ -569,6 +618,8 @@ public final class GameViewModel {
         }
         updatePlayerViewStates();
         updateBankViewState(bankState.get());
+        climateTracker.set(gameModel.getClimateTracker().getClimateLevel());
+        updateTileViewStates();
 
     }
 
@@ -582,6 +633,8 @@ public final class GameViewModel {
         }
         updatePlayerViewStates();
         updateBankViewState(bankState.get());
+        climateTracker.set(gameModel.getClimateTracker().getClimateLevel());
+        updateTileViewStates();
     }
 
     public void switchToBuildCityState() {
@@ -597,6 +650,8 @@ public final class GameViewModel {
         }
         updatePlayerViewStates();
         updateBankViewState(bankState.get());
+        climateTracker.set(gameModel.getClimateTracker().getClimateLevel());
+        updateTileViewStates();
     }
 
     public void switchToMoveRobberState() {
@@ -604,6 +659,8 @@ public final class GameViewModel {
         setDefaultVisibility();
         updatePlayerViewStates();
         updateBankViewState(bankState.get());
+        climateTracker.set(gameModel.getClimateTracker().getClimateLevel());
+        updateTileViewStates();
 
     }
 
@@ -624,6 +681,8 @@ public final class GameViewModel {
         if (!canSteal) {
             switchToTradeState();
         }
+        climateTracker.set(gameModel.getClimateTracker().getClimateLevel());
+        updateTileViewStates();
     }
 
     // do these need more happening in them?
@@ -631,6 +690,8 @@ public final class GameViewModel {
         previousState = turnState.get();
         turnState.set(TurnState.ECO_CONFERENCE);
         updatePlayerViewStates();
+        climateTracker.set(gameModel.getClimateTracker().getClimateLevel());
+        updateTileViewStates();
 
     }
 
@@ -641,27 +702,48 @@ public final class GameViewModel {
             roads.get(i).visible.set(canCurrentPlayerBuildRoad(i));
         }
         updatePlayerViewStates();
+        climateTracker.set(gameModel.getClimateTracker().getClimateLevel());
+        updateTileViewStates();
     }
 
     public void switchToTradeFrenzyState() {
         previousState = turnState.get();
         turnState.set(TurnState.TRADE_FRENZY);
         updatePlayerViewStates();
+        climateTracker.set(gameModel.getClimateTracker().getClimateLevel());
+        updateTileViewStates();
     }
 
     public void switchToMonopolyState() {
         previousState = turnState.get();
         turnState.set(TurnState.MONOPOLY);
         updatePlayerViewStates();
+        climateTracker.set(gameModel.getClimateTracker().getClimateLevel());
+        updateTileViewStates();
     }
 
     public void switchToPlayDevCardState() {
         turnState.set(TurnState.PLAY_DEV_CARD);
+        updateTileViewStates();
+
+    }
+
+    public void switchToRepairTileState() {
+        turnState.set(TurnState.REPAIR_TILE);
+        updateTileViewStates();
+        updatePlayerViewStates();
+        updateBankViewState(bankState.get());
+        climateTracker.set(gameModel.getClimateTracker().getClimateLevel());
+        System.out.println("Switched to repair tile state");
     }
 
     public void switchToPreviousState() {
         turnState.set(previousState);
+        climateTracker.set(gameModel.getClimateTracker().getClimateLevel());
+        updateTileViewStates();
+
     }
+
 
     public void endTurn() {
         if (isGameOver()) {

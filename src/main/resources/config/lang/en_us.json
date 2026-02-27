@@ -35,6 +35,18 @@
     "hint.turn.roll_dice": "Roll the dice to start your turn.",
     "hint.turn.trade": "Trade resources, then choose your next action.",
     "hint.turn.build": "Build infrastructure or end your turn.",
+    "hint.turn.play_dev_card": "Play a development card, then choose your next action.",
+    "hint.turn.eco_conference": "Move the eco conference to steal a resource card from an opponent.",
+    "hint.turn.highway_madness": "Click to build two highways for free.",
+    "hint.turn.trading_frenzy": "Choose any 3 resource cards from the bank.",
+    "hint.turn.monopoly": "Choose a resource type to steal from all opponents.",
+    "hint.turn.steal_resource": "Click on an adjacent industrial estate to steal a resource card from that player.",
+    "hint.turn.repair_tile": "Click on a damaged tile to repair it.",
+    "hint.turn.move_robber": "Click on a tile to move the robber and steal a resource card from an opponent with an adjacent industrial estate.",
+    "hint.turn.build_settlement": "Click on a valid intersection to build an industrial estate.",
+    "hint.turn.build_road": "Click on a valid edge to build a highway.",
+    "hint.turn.build_city": "Click on one of your industrial estates to upgrade it to an eco city.",
+
 
     "_comment": "Title Screen:",
     "playText": "Play Game",
@@ -44,5 +56,47 @@
     "proposeTradeButton": "Propose Trade",
     "bankTradeTitleLabel": "Trade with Bank",
     "portTradeTitleLabel": "Trade with Ports",
-    "playerTradeTitleLabel": "Trade with Players"
+    "playerTradeTitleLabel": "Trade with Players",
+
+    "currentPlayerDevCardsLabel": "Dev Cards",
+    "buildSettlementButton": "Build Industrial Estate",
+    "buildCityButton": "Build Eco City",
+    "buildRoadButton": "Build Highway",
+    "buildDevCardButton": "Build Dev Card",
+    "repairTileButton": "Repair Tile",
+    "tradeButton": "Trade",
+    "endTurnButton": "End Turn",
+    "rollDiceButton": "Roll Dice",
+    "buildButton": "Build",
+    "currentPlayerScoreLabel": "Score: ",
+    "diceLabel": "Dice: ",
+    "resourcesLabel": "Resources",
+
+    "playCardButton": "Play Card",
+    "backButton": "Back",
+    "nextButton": "Next",
+
+    "selectResourceButton": "Select Resource",
+
+    "settingsLabel": "Settings",
+    "languageLabel": "Language:",
+
+    "tradingMenuLabel": "Trading Menu",
+    "playerTradeButton": "Players",
+    "bankTradeButton": "Bank",
+    "portTradeButton": "Ports",
+    "endTradingButton": "End Trading",
+
+    "setupTitleLabel": "Game Setup",
+    "playerNumberLabel": "Number of Players",
+    "threeOption": "3",
+    "fourOption": "4",
+    "player1Label": "Player 1:",
+    "player2Label": "Player 2:",
+    "player3Label": "Player 3:",
+    "player4Label": "Player 4:",
+
+    "titleTLabel": "T",
+    "titleAccentLabel": "Industrialists of",
+    "titleRestLabel": "empra"
 }
