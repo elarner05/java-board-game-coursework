@@ -23,34 +23,34 @@
     xmlns="http://javafx.com/javafx"
     xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="com.example.view.TradePlayerMenuController"
-    style="-fx-padding: 20;">
+    style="-fx-padding: 5;">
 
     <Label fx:id="playerTradeTitleLabel"
         styleClass="trading-title"/>
 
     <Label fx:id="playerGiveTitle" styleClass="resources-title" text="You are Offering: "/>
     <HBox fx:id="giveResourceBox"
-        spacing="10"
+        spacing="2"
         alignment="CENTER"
-        prefWidth="400">
+        prefWidth="900">
         <!-- Added Dynamically -->
 
     </HBox>
 
     <Label fx:id="playerReceiveTitle" styleClass="resources-title" text="To Receive: "/>
     <HBox fx:id="receiveResourceBox"
-        spacing="10"
+        spacing="2"
         alignment="CENTER"
-        prefWidth="400">
+        prefWidth="900">
         <!-- Added Dynamically -->
     </HBox>
 
     <Button fx:id="proposeTradeButton" onAction="#handleProposeTrade" HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="action-button"/>
 
     <HBox fx:id="playersAcceptBox"
-        spacing="10"
+        spacing="2"
         alignment="CENTER"
-        prefWidth="400">
+        prefWidth="900">
 
         <!-- Added Dynamically -->
     </HBox>

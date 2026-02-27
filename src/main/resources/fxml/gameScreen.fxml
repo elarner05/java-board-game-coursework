@@ -246,7 +246,7 @@
         <StackPane fx:id="tradingMenuPopup"
             visible="false"
             alignment="CENTER"
-            maxWidth="800"
+            maxWidth="1200"
             maxHeight="700"
             style="
                 -fx-background-color: rgba(50, 50, 50, 1.0);
