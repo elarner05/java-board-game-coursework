@@ -152,26 +152,21 @@ public class Tiles {
         return tiles;
     }
 
-    public Tile[] getAdjTiles(int vertexIndex){
+    public Tile[] getAdjTiles(int vertex){
         Tile[] adjTiles = new Tile[3];
-        for (int i = 0; i < AdjacencyMaps.TileVertices.length; i++){
-            for (int j = 0; j < AdjacencyMaps.TileVertices[i].length; j++){
-                if (AdjacencyMaps.TileVertices[i][j] == vertexIndex){
-                    boolean alreadyAdded = false;
-                    for (int k = 0; k < 3; k++){
-                        if (adjTiles[k] != null && adjTiles[k].equals(tiles[i])){
-                            alreadyAdded = true;
-                        }
-                        if (adjTiles[k] == null && !alreadyAdded){
-                            adjTiles[k] = tiles[i];
-                            break;
-                        }
-                    }
+        int i = 0;
+        for (Tile t : tiles) {
+            for (int v: t.getAdjVertices()) {
+                if (vertex == v) { // vertex is next to tile
+                    adjTiles[i++] = t;
+                    break;
                 }
             }
+            if (i==3) break; // exit early for safety
         }
         return adjTiles;
     }
+
 
     //need to make sure its not destroying the same tile every time
     public boolean destroyTile(String tileID){

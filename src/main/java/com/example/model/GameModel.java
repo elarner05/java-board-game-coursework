@@ -31,6 +31,12 @@ public class GameModel {
 
     private boolean passBuildRule; // disables checking if roads or settlements are connected to others, to setup
                                    // the board
+    
+    private int longestRoadOwner;
+    private int longestRoadLength;
+    private int cleanestEnvironmentOwner;
+    private int cleanestEnvironmentAmount;
+    private static final int UNOWNED_ID = -1;
 
     public GameModel() {
         this.players = new ArrayList<>();
@@ -43,6 +49,11 @@ public class GameModel {
         this.climateTracker = new ClimateTracker();
 
         this.passBuildRule = false;
+
+        this.longestRoadOwner = UNOWNED_ID;
+        this.longestRoadLength = 0;
+        this.cleanestEnvironmentOwner = UNOWNED_ID;
+        this.cleanestEnvironmentAmount = 0;
     }
 
     // // code used to test how settlement placements are be valued
@@ -812,6 +823,32 @@ public class GameModel {
         return roads.longestRoadExists(playerIds) && roads.longestRoadOwner(playerIds) == playerId;
     }
 
+    // returns whether longest road changes
+    public boolean updateLongestRoad() {
+        int[] playerIds = new int[players.size()]; // create playerId array
+        int i=0;
+        for (Player p: players) {
+            playerIds[i++] = p.getId();
+        }
+        if (!roads.longestRoadExists(playerIds)) return false; // if there is no longest road exit now
+
+        int currentLongestRoadOwner = roads.longestRoadOwner(playerIds);
+        int roadLength = roads.getLongestRoadLength(playerIds);
+        if (longestRoadOwner == currentLongestRoadOwner) return false; // no need to update
+        if (roadLength <= this.longestRoadLength) return false; // if the length is the same as last time, no new longest road
+        
+        // change victory points
+        if (longestRoadOwner != GameModel.UNOWNED_ID) {
+            getPlayer(this.longestRoadOwner).changeVictoryPoints(-2); // the old longest road owner is removed
+        }
+        getPlayer(currentLongestRoadOwner).changeVictoryPoints(+2);
+
+        //update saved longest road
+        this.longestRoadOwner = currentLongestRoadOwner;
+        this.longestRoadLength = roadLength;
+
+        return true;
+    }
 
     // need to do front end stuff to chose tile to destroy
     // asks for same resource as tile atm - need to fix
@@ -894,6 +931,35 @@ public class GameModel {
         }
 
         return bestPlayerId == playerId && bestTiles >= 3;
+    }
+
+    // returns whether longest road changes
+    public boolean updateCleanestEnvironment() {
+        int bestPlayerId = GameModel.UNOWNED_ID;
+        int bestTiles = -1;
+        for (Player p : players) {
+            int tid = p.getTilesRestored();
+            if (tid > bestTiles) {
+                bestTiles = tid;
+                bestPlayerId = p.getId();
+            }
+        }
+
+        if (bestPlayerId == GameModel.UNOWNED_ID || bestTiles < 3) return false; // no cleanest environment 
+        if (bestPlayerId == this.cleanestEnvironmentOwner) return false; // cleanest environment has not changed
+        if (bestTiles <= cleanestEnvironmentAmount) return false; // cleanest environment needs to be greater than before to change owners
+
+        // update victory points
+        if (this.cleanestEnvironmentOwner != GameModel.UNOWNED_ID) {
+            getPlayer(this.cleanestEnvironmentOwner).changeVictoryPoints(-2); // remove old owners
+        }
+        getPlayer(bestPlayerId).changeVictoryPoints(+2);
+
+        // save the new information
+        this.cleanestEnvironmentOwner = bestPlayerId;
+        this.cleanestEnvironmentAmount = bestTiles;
+        
+        return true;
     }
 
     /*
@@ -983,14 +1049,14 @@ public class GameModel {
     }
 
     public boolean playDevCard(int playerId, DevCardConfig devCardConfig) {
+        if (devCardConfig == null)
+            return false;
+
         Player player = getPlayer(playerId);
         if (player == null)
             return false;
 
         if (!player.hasCard(devCardConfig.id))
-            return false;
-
-        if (devCardConfig == null)
             return false;
 
         String action = devCardConfig.actionType == null ? "" : devCardConfig.actionType;

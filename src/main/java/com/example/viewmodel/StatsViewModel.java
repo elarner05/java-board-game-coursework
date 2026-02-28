@@ -126,15 +126,8 @@ public class StatsViewModel {
     }
 
     private int calcVictoryPoints(Player p) {
-        // TODO hook game stats here if you have a real VP tracker
-        // This uses the "structures remaining" idea that's already in Player.
-        int settlementsBuilt = 5 - p.getStructuresRemaining("player_infrastructure.settlement");
-        int citiesBuilt = 4 - p.getStructuresRemaining("player_infrastructure.city");
-
-        if (settlementsBuilt < 0) settlementsBuilt = 0;
-        if (citiesBuilt < 0) citiesBuilt = 0;
-
-        return settlementsBuilt + (citiesBuilt * 2);
+        // sorry euan, i am not fixing that code, just use the getter
+        return p.getTotalVictoryPoints();
     }
 
     private void setPresentPlayers(int numPlayers) {
