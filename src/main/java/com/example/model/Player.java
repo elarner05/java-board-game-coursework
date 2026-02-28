@@ -17,12 +17,12 @@ import com.example.model.config.service.ConfigService;
 public class Player {
     private static int nextId = 1;
 
-    private int id;
+    private final int id;
     private String name;
 
     // This data structures should be changed as necessary
-    private HashMap<ResourceConfig, Integer> resources;
-    private ArrayList<String> devCards;
+    private final HashMap<ResourceConfig, Integer> resources;
+    private final ArrayList<String> devCards;
     private HashMap<String, Integer> structuresRemaining;
 
     private int tilesRestored;

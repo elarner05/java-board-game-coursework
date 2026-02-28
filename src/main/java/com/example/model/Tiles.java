@@ -17,7 +17,7 @@ public class Tiles {
     public static final int NUMBER_OF_HEXES = 19;
 
     public Tiles() {
-        this.tiles = setUpTiles();
+        setUpTiles();
     }
 
     // getter
@@ -31,8 +31,8 @@ public class Tiles {
     }
 
     // set up all the tiles in the gameboard
-    private Tile[] setUpTiles() {
-        Tile[] tiles = new Tile[NUMBER_OF_HEXES];
+    private void setUpTiles() {
+        tiles = new Tile[NUMBER_OF_HEXES];
 
         // Instantiate tiles
         for (int i = 0; i < NUMBER_OF_HEXES; i++) {
@@ -84,8 +84,7 @@ public class Tiles {
             }
         }
 
-        // Set adjacency info
-        return setAdjVerticesForEachTile(tiles);
+        setAdjVerticesForEachTile(tiles);
     }
 
     private int[] getTokens() {
@@ -198,15 +197,15 @@ public class Tiles {
 
     //Find tiles based off of a diceroll
     public ArrayList<Tile> GetTilesFromDiceroll(int diceroll){
-        ArrayList<Tile> tilesWithDiceroll = new ArrayList<Tile>();
+        ArrayList<Tile> tilesWithDiceroll = new ArrayList<>();
         Tile[] allTiles = getTiles();
 
         //check if each tile has diceroll value (And isn't blocked)
-        for (int i = 0; i < allTiles.length; i++){
-            if (allTiles[i].getNumber() == diceroll){
+        for (Tile t : allTiles){
+            if (t.getNumber() == diceroll){
                 //tile has the desired value
-                if (!allTiles[i].getIsBlocked() && !allTiles[i].getIsDestroyed()){
-                    tilesWithDiceroll.add(allTiles[i]);
+                if (!t.getIsBlocked() && !t.getIsDestroyed()){
+                    tilesWithDiceroll.add(t);
                 }
             }
         }
