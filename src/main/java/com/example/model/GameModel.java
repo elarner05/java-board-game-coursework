@@ -172,7 +172,7 @@ public class GameModel {
             if (v == -1)
                 break; // break early if no rating
             vertices[i] = v;
-            vr[v] = -1.f;
+            vr[v] = -1.d;
         }
 
         return vertices;
@@ -839,7 +839,7 @@ public class GameModel {
         
         // change victory points
         if (longestRoadOwner != GameModel.UNOWNED_ID) {
-            getPlayer(this.longestRoadOwner).changeVictoryPoints(-2); // the old longest road owner is removed
+            getPlayer(this.longestRoadOwner).changeVictoryPoints(-2); // the old longest road owner loses VPs
         }
         getPlayer(currentLongestRoadOwner).changeVictoryPoints(+2);
 
@@ -951,14 +951,14 @@ public class GameModel {
 
         // update victory points
         if (this.cleanestEnvironmentOwner != GameModel.UNOWNED_ID) {
-            getPlayer(this.cleanestEnvironmentOwner).changeVictoryPoints(-2); // remove old owners
+            getPlayer(this.cleanestEnvironmentOwner).changeVictoryPoints(-2); // remove old owner's VPs
         }
         getPlayer(bestPlayerId).changeVictoryPoints(+2);
 
         // save the new information
         this.cleanestEnvironmentOwner = bestPlayerId;
         this.cleanestEnvironmentAmount = bestTiles;
-        
+
         return true;
     }
 
@@ -1174,7 +1174,7 @@ public class GameModel {
     }
 
     public ArrayList<DevCardConfig> getPlayerDevCards(int playerId) {
-            Player player = getPlayer(playerId);
+        Player player = getPlayer(playerId);
         if (player == null)
             return new ArrayList<>();
         return player.getDevCards();
