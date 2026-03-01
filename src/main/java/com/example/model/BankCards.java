@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.example.model.config.DevCardConfig;
 import com.example.model.config.DisasterCardConfig;
+import com.example.model.config.PlayerInfrastructureConfig;
 import com.example.model.config.ResourceConfig;
 import com.example.model.config.service.ConfigService;
 
@@ -111,6 +112,34 @@ public class BankCards {
 
     public boolean hasDevelopmentCards() {
         return !developmentCards.isEmpty();
+    }
+
+    public void addStructureResourcesToBank(String structureID) {
+        // when a settlement or city is built, the resources used to build it are returned to the bank
+        // this method adds those resources back to the bank
+        // get the resource cost of the structure from the config
+        PlayerInfrastructureConfig config = ConfigService.getInfrastructure(structureID);
+        Map<String, Integer> resourceCost = config.constructionCosts;
+        for (Map.Entry<String, Integer> entry : resourceCost.entrySet()) {
+            String resourceID = entry.getKey();
+            int amount = entry.getValue();
+            ResourceConfig resourceConfig = ConfigService.getResource(resourceID);
+            returnResourceCard(resourceConfig, amount);
+        }
+    }
+
+    public void removeStructureResourcesFromBank(String structureID) {
+        // when a settlement or city is built, the resources used to build it are removed from the bank
+        // this method removes those resources from the bank
+        // get the resource cost of the structure from the config
+        PlayerInfrastructureConfig config = ConfigService.getInfrastructure(structureID);
+        Map<String, Integer> resourceCost = config.constructionCosts;
+        for (Map.Entry<String, Integer> entry : resourceCost.entrySet()) {
+            String resourceID = entry.getKey();
+            int amount = entry.getValue();
+            ResourceConfig resourceConfig = ConfigService.getResource(resourceID);
+            giveResourceCard(resourceConfig, amount);
+        }
     }
 
 }

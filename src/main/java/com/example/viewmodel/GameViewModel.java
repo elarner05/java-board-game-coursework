@@ -436,7 +436,7 @@ public final class GameViewModel {
                         this.updatePlayerViewStates();
                     }
                     highwaySelectedRoads.clear();
-                    switchToBuildState();
+                    switchToPreviousState();
                 }
             }
             default -> {
@@ -459,7 +459,7 @@ public final class GameViewModel {
                         }
                     }
                     frenzySelectedResources.clear();
-                    switchToBuildState();
+                    switchToPreviousState();
                 }
             }
             case MONOPOLY -> {
@@ -473,7 +473,7 @@ public final class GameViewModel {
                     }
                 }
                 monopolySelectedResource = null;
-                switchToBuildState();
+                switchToPreviousState();
             }
             default -> {
                 // ignore

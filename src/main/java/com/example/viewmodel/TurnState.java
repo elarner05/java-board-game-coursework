@@ -12,7 +12,7 @@ public enum TurnState {
     PLAY_DEV_CARD("hint.turn.play_dev_card"),
     ECO_CONFERENCE("hint.turn.eco_conference"),
     HIGHWAY_MADNESS("hint.turn.highway_madness"),
-    TRADE_FRENZY("hint.turn.trade_frenzy"),
+    TRADE_FRENZY("hint.turn.trading_frenzy"),
     MONOPOLY("hint.turn.monopoly"),
     STEAL_RESOURCE("hint.turn.steal_resource"),
     REPAIR_TILE("hint.turn.repair_tile");
