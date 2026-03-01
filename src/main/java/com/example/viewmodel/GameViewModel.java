@@ -332,6 +332,9 @@ public final class GameViewModel {
         if (success) {
             int playerID = currentPlayer.get().idProperty().get();
             roads.get(roadIndex).owner.set(playerID);
+
+            gameModel.updateLongestRoad();
+            this.updatePlayerViewStates(); // update the viewstates, in case the longest road has changed
         }
     }
 
@@ -359,6 +362,8 @@ public final class GameViewModel {
         }
         boolean success = gameModel.tileRestore(tileIndex, currentPlayer.get().idProperty().get());
         if (success) {
+            gameModel.updateCleanestEnvironment();
+            this.updatePlayerViewStates(); // update the viewstates, in case the cleanest environment has changed
             updateTileViewStates();
             return true;
         }
@@ -397,6 +402,9 @@ public final class GameViewModel {
                     switchToBuildState();
                 }
             }
+            case ECO_CONFERENCE -> {
+                moveRobber(vertexIndex);
+            }
             default -> {
                 // No action
             }
@@ -424,10 +432,8 @@ public final class GameViewModel {
                             roads.get(idx).owner.set(playerID);
                             roads.get(idx).visible.set(true);
                         }
-                        updatePlayerViewState(getCurrentPlayer());
-                        for (int i = 0; i < players.size(); i++) {
-                            updatePlayerViewState(players.get(i));
-                        }
+                        gameModel.updateLongestRoad();
+                        this.updatePlayerViewStates();
                     }
                     highwaySelectedRoads.clear();
                     switchToBuildState();
@@ -493,7 +499,7 @@ public final class GameViewModel {
             case "TRADING_FRENZY" -> switchToTradeFrenzyState();
             case "MONOPOLY" -> switchToMonopolyState();
             default -> {
-                // unknown card type
+                // unknown card type or victory point
             }
         }
     }
@@ -744,14 +750,14 @@ public final class GameViewModel {
 
     }
 
-
-    public void endTurn() {
+    public void endTurn() { 
         if (isGameOver()) {
-            // switch to stats screen, currently crashes
+            // switch to stats screen
             StatsViewModel statsViewModel = new StatsViewModel(gameModel, navigationService);
             navigationService.navigateTo("stats", statsViewModel);
             return;
-        } 
+        }
+
         nextPlayer();
         switchToRollDiceState();
     }

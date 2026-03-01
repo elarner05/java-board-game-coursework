@@ -69,8 +69,8 @@ public class CurrentPlayerController {
 
     @FXML
     private HBox diceBox;
-    private ImageView dice1 = new ImageView();
-    private ImageView dice2 = new ImageView();
+    private final ImageView dice1 = new ImageView();
+    private final ImageView dice2 = new ImageView();
 
     // @FXML
     // private Label die1Value;

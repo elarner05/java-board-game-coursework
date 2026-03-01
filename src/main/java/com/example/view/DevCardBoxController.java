@@ -1,19 +1,19 @@
 package com.example.view;
 
-import com.example.viewmodel.GameViewModel;
-import com.example.viewmodel.viewstates.PlayerViewState;
 import com.example.model.config.DevCardConfig;
 import com.example.model.config.LangManager;
+import com.example.viewmodel.GameViewModel;
+import com.example.viewmodel.viewstates.PlayerViewState;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
-import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.collections.ListChangeListener;
-import javafx.beans.binding.Bindings;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 
 public class DevCardBoxController {
 
