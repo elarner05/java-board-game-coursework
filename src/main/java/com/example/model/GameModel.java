@@ -285,6 +285,7 @@ public class GameModel {
                     continue; // if invalid skip to next
 
                 settlementBuilt = buildSettlement(v, id); // build the settlement
+                bankCards.removeStructureResourcesFromBank("player_infrastructure.settlement"); // remove the settlement cost resources from the bank
                 if (settlementBuilt) {
                     builtVertices.add(v); // store the vertex, for the road building phase
                 }
@@ -300,6 +301,7 @@ public class GameModel {
                     ResourceConfig resource = t.getResourceFromTileID();
                     Player p = getPlayer(id);
                     p.changeResourceCount(resource, 1);
+                    bankCards.giveResourceCard(resource, 1);
                 }
             }
 
@@ -335,7 +337,10 @@ public class GameModel {
             for (Road r : potentialRoads) {
                 int[] roadVerts = r.getVertices();
                 roadBuilt = buildRoad(Roads.getRoadIndex(roadVerts[0], roadVerts[1]), playerID);
-                if (roadBuilt) break;
+                if (roadBuilt) {
+                    bankCards.removeStructureResourcesFromBank("player_infrastructure.road"); 
+                    break;
+                }
             }
             if (!roadBuilt) {
                 passBuildRule = false;
@@ -492,8 +497,9 @@ public class GameModel {
         
         if (success_resources && success_build) {
             increaseClimateAndDistributeDisasterCards();
+            player.changeVictoryPoints(+1);// add victory point
+            bankCards.addStructureResourcesToBank(structureID); // give resources from settlement back to bank when built
         }
-        player.changeVictoryPoints(+1);// add victory point
         return success_resources && success_pieces && success_build;
     }
 
@@ -523,6 +529,7 @@ public class GameModel {
 
         // add victory point
         player.changeVictoryPoints(+1);
+        bankCards.addStructureResourcesToBank(structureID); // give resources from city back to bank when built
         return success_resources && success_pieces && success_upgrade;
     }
 
@@ -547,6 +554,7 @@ public class GameModel {
         boolean success_build = roads.buildRoad(edgeIndex, playerID);
         boolean success_resources = player.deductStructureResources(structureID);
         boolean success_pieces = player.changeStructuresRemainingByType(structureID, -1);
+        bankCards.addStructureResourcesToBank(structureID);
         return success_resources && success_pieces && success_build;
     }
 
@@ -897,17 +905,12 @@ public class GameModel {
                 ResourceConfig r = ConfigService.getResource(resourceID);
                 int amount = cfg.constructionCosts.get(resourceID);
                 player.changeResourceCount(r, amount);
-                bankCards.returnResourceCard(r, amount);
             }
             return false;
         }
 
         // on success, return the deducted resources to the bank
-        for (String resourceID : cfg.constructionCosts.keySet()) {
-            ResourceConfig r = ConfigService.getResource(resourceID);
-            int amount = cfg.constructionCosts.get(resourceID);
-            bankCards.returnResourceCard(r, amount);
-        }
+        bankCards.addStructureResourcesToBank(structureId);
 
         player.increaseTilesRestored();
 
@@ -997,14 +1000,15 @@ public class GameModel {
 
     public boolean buyDevelopmentCard(int playerId) {
         Player player = getPlayer(playerId);
+        String structureID = "player_infrastructure.dev_card";
         if (player == null)
             return false;
 
         // check & deduct cost
-        if (!player.hasEnoughResourcesForStructure("player_infrastructure.dev_card")) {
+        if (!player.hasEnoughResourcesForStructure(structureID)) {
             return false;
         }
-        boolean deducted = player.deductStructureResources("player_infrastructure.dev_card");
+        boolean deducted = player.deductStructureResources(structureID);
         if (!deducted)
             return false;
 
@@ -1012,7 +1016,7 @@ public class GameModel {
         String devCardId = bankCards.giveDevelopmentCard();
         if (devCardId == null || devCardId.isEmpty()) {
             // refund resources
-            PlayerInfrastructureConfig cfg = ConfigService.getInfrastructure("player_infrastructure.dev_card");
+            PlayerInfrastructureConfig cfg = ConfigService.getInfrastructure(structureID);
             for (String resourceID : cfg.constructionCosts.keySet()) {
                 ResourceConfig r = ConfigService.getResource(resourceID);
                 int amount = cfg.constructionCosts.get(resourceID);
@@ -1020,7 +1024,7 @@ public class GameModel {
             }
             return false;
         }
-
+        bankCards.addStructureResourcesToBank(structureID); // return the dev card cost resources to the bank
         // deliver the card (handles victory-point semantics)
         handleReceivedDevelopmentCard(playerId, devCardId);
         return true;
