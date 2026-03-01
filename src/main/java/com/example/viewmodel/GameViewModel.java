@@ -751,12 +751,8 @@ public final class GameViewModel {
     }
 
     public void endTurn() { 
-        // update these here?
-        gameModel.updateLongestRoad();
-        this.updatePlayerViewStates(); // update the viewstates, in case the longest road has changed
-
         if (isGameOver()) {
-            // switch to stats screen, currently crashes
+            // switch to stats screen
             StatsViewModel statsViewModel = new StatsViewModel(gameModel, navigationService);
             navigationService.navigateTo("stats", statsViewModel);
             return;
