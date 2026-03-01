@@ -18,7 +18,7 @@ public class Roads {
     
     private int nextBuildID = 1; // ID to assign to the next built road
 
-    private Road[] roads; // array of all road objects; starts filled with unowned roads
+    private final Road[] roads; // array of all road objects; starts filled with unowned roads
 
     public Roads() {
         roads = new Road[NUMBER_OF_ROADS];

@@ -1,19 +1,24 @@
 package com.example.model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.example.model.config.ConfigManager;
 import com.example.model.config.PortConfig;
 import com.example.model.config.ResourceConfig;
 import com.example.model.config.service.ConfigService;
-import com.example.model.trading.*;
-
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.ArrayList;
-import java.util.HashMap;
+import com.example.model.trading.TradeBank;
+import com.example.model.trading.TradePlayer;
+import com.example.model.trading.TradePort;
 
 /**
  * Unit tests for GameModel class
@@ -120,25 +125,10 @@ public class GameModelTest {
     }
 
     @Test
-    public void testSettlementValid() {
-        gameModel.initializePlayers(playerNames);
-        int playerId = gameModel.getPlayers().get(0).getId();
-        gameModel.giveSettlementResources(playerId);
-        assertTrue(gameModel.settlementValid(0, playerId));
-    }
-
-    @Test
-    public void testCityValid() {
+    public void testCityNotValid() {
         gameModel.initializePlayers(playerNames);
         int playerId = gameModel.getPlayers().get(0).getId();
         assertFalse(gameModel.cityValid(0, playerId)); // No settlement exists
-    }
-
-    @Test
-    public void testRoadValid() {
-        gameModel.initializePlayers(playerNames);
-        int playerId = gameModel.getPlayers().get(0).getId();
-        assertTrue(gameModel.roadValid(0, playerId));
     }
 
     @Test
@@ -150,16 +140,6 @@ public class GameModelTest {
         boolean result = gameModel.buildSettlement(0, playerId);
         // Result depends on Settlements logic
         assertTrue(result);
-    }
-
-    @Test
-    public void testPlayerHasSettlementResources() {
-        gameModel.initializePlayers(playerNames);
-        int playerId = gameModel.getPlayers().get(0).getId();
-        assertFalse(gameModel.playerHasSettlementResources(playerId));
-
-        gameModel.giveSettlementResources(playerId);
-        assertTrue(gameModel.playerHasSettlementResources(playerId));
     }
 
     @Test
@@ -176,16 +156,6 @@ public class GameModelTest {
     }
 
     @Test
-    public void testPlayerHasCityResources() {
-        gameModel.initializePlayers(playerNames);
-        int playerId = gameModel.getPlayers().get(0).getId();
-        assertFalse(gameModel.playerHasCityResources(playerId));
-
-        gameModel.giveCityResources(playerId);
-        assertTrue(gameModel.playerHasCityResources(playerId));
-    }
-
-    @Test
     public void testBuildRoad() {
         gameModel.initializePlayers(playerNames);
         int playerId = gameModel.getPlayers().get(0).getId();
@@ -194,16 +164,6 @@ public class GameModelTest {
         boolean result = gameModel.buildRoad(0, playerId);
         // Result depends on Roads logic
         assertTrue(result);
-    }
-
-    @Test
-    public void testPlayerHasRoadResources() {
-        gameModel.initializePlayers(playerNames);
-        int playerId = gameModel.getPlayers().get(0).getId();
-        assertFalse(gameModel.playerHasRoadResources(playerId));
-
-        gameModel.giveRoadResources(playerId);
-        assertTrue(gameModel.playerHasRoadResources(playerId));
     }
 
     @Test

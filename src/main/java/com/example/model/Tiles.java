@@ -17,7 +17,7 @@ public class Tiles {
     public static final int NUMBER_OF_HEXES = 19;
 
     public Tiles() {
-        this.tiles = setUpTiles();
+        setUpTiles();
     }
 
     // getter
@@ -31,8 +31,8 @@ public class Tiles {
     }
 
     // set up all the tiles in the gameboard
-    private Tile[] setUpTiles() {
-        Tile[] tiles = new Tile[NUMBER_OF_HEXES];
+    private void setUpTiles() {
+        tiles = new Tile[NUMBER_OF_HEXES];
 
         // Instantiate tiles
         for (int i = 0; i < NUMBER_OF_HEXES; i++) {
@@ -84,8 +84,7 @@ public class Tiles {
             }
         }
 
-        // Set adjacency info
-        return setAdjVerticesForEachTile(tiles);
+        setAdjVerticesForEachTile(tiles);
     }
 
     private int[] getTokens() {
@@ -152,26 +151,21 @@ public class Tiles {
         return tiles;
     }
 
-    public Tile[] getAdjTiles(int vertexIndex){
+    public Tile[] getAdjTiles(int vertex){
         Tile[] adjTiles = new Tile[3];
-        for (int i = 0; i < AdjacencyMaps.TileVertices.length; i++){
-            for (int j = 0; j < AdjacencyMaps.TileVertices[i].length; j++){
-                if (AdjacencyMaps.TileVertices[i][j] == vertexIndex){
-                    boolean alreadyAdded = false;
-                    for (int k = 0; k < 3; k++){
-                        if (adjTiles[k] != null && adjTiles[k].equals(tiles[i])){
-                            alreadyAdded = true;
-                        }
-                        if (adjTiles[k] == null && !alreadyAdded){
-                            adjTiles[k] = tiles[i];
-                            break;
-                        }
-                    }
+        int i = 0;
+        for (Tile t : tiles) {
+            for (int v: t.getAdjVertices()) {
+                if (vertex == v) { // vertex is next to tile
+                    adjTiles[i++] = t;
+                    break;
                 }
             }
+            if (i==3) break; // exit early for safety
         }
         return adjTiles;
     }
+
 
     //need to make sure its not destroying the same tile every time
     public boolean destroyTile(String tileID){
@@ -203,15 +197,15 @@ public class Tiles {
 
     //Find tiles based off of a diceroll
     public ArrayList<Tile> GetTilesFromDiceroll(int diceroll){
-        ArrayList<Tile> tilesWithDiceroll = new ArrayList<Tile>();
+        ArrayList<Tile> tilesWithDiceroll = new ArrayList<>();
         Tile[] allTiles = getTiles();
 
         //check if each tile has diceroll value (And isn't blocked)
-        for (int i = 0; i < allTiles.length; i++){
-            if (allTiles[i].getNumber() == diceroll){
+        for (Tile t : allTiles){
+            if (t.getNumber() == diceroll){
                 //tile has the desired value
-                if (!allTiles[i].getIsBlocked() && !allTiles[i].getIsDestroyed()){
-                    tilesWithDiceroll.add(allTiles[i]);
+                if (!t.getIsBlocked() && !t.getIsDestroyed()){
+                    tilesWithDiceroll.add(t);
                 }
             }
         }
