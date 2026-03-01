@@ -1039,12 +1039,11 @@ public class GameModel {
 
         String action = cfg.actionType == null ? "" : cfg.actionType;
         if ("VICTORY_POINT".equals(action)) {
-            // award invisible VP immediately and do NOT add the card to hand
+            // award invisible VP immediately; return here to stop it being added to the hand
             player.changeHiddenVictoryPoints(+1);
-            return;
         }
 
-        // other dev-cards are added to the player's hand and may be played
+        // dev-cards are added to the player's hand and may be played
         player.addCard(devCardId);
     }
 

@@ -92,11 +92,11 @@
 
         <VBox>
             <Button fx:id="giveSettlementResourcesButton" text="GIVE SETTLEMENT RESOURCES"
-                onAction="#giveSettlementResources" visible="false"/>
+                onAction="#giveSettlementResources" />
             <Button fx:id="giveCityResourcesButton" text="GIVE CITY RESOURCES"
-                onAction="#giveCityResources" visible="false"/>
+                onAction="#giveCityResources" />
             <Button fx:id="giveRoadResourcesButton" text="GIVE ROAD RESOURCES"
-                onAction="#giveRoadResources" visible="false"/>
+                onAction="#giveRoadResources" /><!--visible="false"/>-->
         </VBox>
 
         <Pane fx:id="playerColumnPane" layoutX="717" prefWidth="819" prefHeight="864"

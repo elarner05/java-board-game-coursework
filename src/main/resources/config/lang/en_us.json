@@ -6,7 +6,7 @@
     "dev_card.trading_frenzy.name": "Trading Frenzy",
     "dev_card.monopoly.name": "Monopoly",
     "dev_card.eco_conference.description": "Move the eco conference and steal 1 resource card from a player with an industrial estate adjacent to the new eco conference location.",
-    "dev_card.victory_point.description": "This card is worth 1 victory point when revealed.",
+    "dev_card.victory_point.description": "This card is worth 1 victory point upon being picked up.",
     "dev_card.highway_madness.description": "Place 2 new highways as if you had just built them.",
     "dev_card.trading_frenzy.description": "Take any 3 resource cards from the bank.",
     "dev_card.monopoly.description": "Choose 1 resource. All other players must give you all their resource cards of that type.",

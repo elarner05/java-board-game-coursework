@@ -499,7 +499,7 @@ public final class GameViewModel {
             case "TRADING_FRENZY" -> switchToTradeFrenzyState();
             case "MONOPOLY" -> switchToMonopolyState();
             default -> {
-                // unknown card type
+                // unknown card type or victory point
             }
         }
     }
