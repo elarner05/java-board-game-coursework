@@ -933,7 +933,7 @@ public class GameModel {
         return bestPlayerId == playerId && bestTiles >= 3;
     }
 
-    // returns whether longest road changes
+    // returns whether cleanest environment changes
     public boolean updateCleanestEnvironment() {
         int bestPlayerId = GameModel.UNOWNED_ID;
         int bestTiles = -1;
